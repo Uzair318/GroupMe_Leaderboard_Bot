@@ -79,5 +79,5 @@ function postMessage2() {
   console.log('sending ' + botResponse + ' to ' + botID);
 
 
-
+}
 exports.respond = respond;
