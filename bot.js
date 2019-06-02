@@ -5,14 +5,15 @@ var botID = process.env.BOT_ID;
 
 function respond() {//**** */
   var request = JSON.parse(this.req.chunks[0]),
-      botRegex = /^\/cool guy$/;
+      //botRegex = /^\/cool guy$/;
+      botRegex = /^verdict?$/;
 
   if(request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
     this.res.writeHead(200);
     postMessage();
     this.res.end();
   }
-  else if(request.text && request.text == "hi") {
+  else if(request.text && (request.text == "hi")) {   //if you say hi in chat
     this.res.writeHead(200);
     postMessage2();
     this.res.end();
@@ -27,7 +28,8 @@ function respond() {//**** */
 function postMessage() {
   var botResponse, options, body, botReq;
 
-  botResponse = cool();
+  //botResponse = cool();
+  botResponse = "Guilty!";
 
   options = {
     hostname: 'api.groupme.com',
