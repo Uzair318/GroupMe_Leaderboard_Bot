@@ -29,7 +29,7 @@ function postMessage() {
   var botResponse, options, body, botReq;
 
   //botResponse = cool();
-  botResponse = "Guilty!";
+  botResponse = "Guilty!"; //Should be in string form
 
   options = {
     hostname: 'api.groupme.com',
