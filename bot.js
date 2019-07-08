@@ -1,5 +1,7 @@
+//import axios from 'axios'
 var HTTPS = require('https');
 var cool = require('cool-ascii-faces');
+
 
 var botID = process.env.BOT_ID;
 
@@ -37,12 +39,12 @@ function respond() {//* */
     this.res.writeHead(200);
     postMessage();
     this.res.end();
-  }/*
+  }
   else if(request.text && (request.text == "hi")) {   //if you say hi in chat
     this.res.writeHead(200);
     postMessage2();
     this.res.end();
-  } */
+  } 
   else {
     console.log("don't care");
     this.res.writeHead(200);
@@ -88,7 +90,7 @@ function postMessage() {
 }
 
 
-/*
+
 function postMessage2() {
   var botResponse, options, body, botReq;
 
@@ -124,5 +126,5 @@ botReq.on('timeout', function(err) {
 });
 botReq.end(JSON.stringify(body));
 
-}*/
+}
 exports.respond = respond;
