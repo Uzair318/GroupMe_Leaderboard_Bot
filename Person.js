@@ -16,8 +16,8 @@ class Person {
         return this.numLikes;
     }
 
-    plusPost() {
-        this.numPosts++;
+    plusPost(num) {
+        this.numPosts += num;
     }
     
     plusLikes(num) {
