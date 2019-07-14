@@ -1,4 +1,4 @@
-//import axios from 'axios'
+import axios from 'axios'
 var HTTPS = require('https');
 var cool = require('cool-ascii-faces');
 
@@ -17,6 +17,7 @@ const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit
 // Library used for HTTP Requests
 const axios = require('axios');
 
+// find another way maybe?
 // same thing as curl
 axios.get(url)
   .then(function (response) {
