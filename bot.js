@@ -1,4 +1,4 @@
-//import axios from 'axios'
+import axios from 'axios'
 var axios = require('axios');
 var HTTPS = require('https');
 var cool = require('cool-ascii-faces');
