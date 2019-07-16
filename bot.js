@@ -1,5 +1,5 @@
 import axios from 'axios'
-var axios = require('axios');
+const axios = require('axios');
 var HTTPS = require('https');
 var cool = require('cool-ascii-faces');
 
@@ -14,8 +14,6 @@ const msgLimit = '100';
 
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
-
-// Library used for HTTP Requests
 
 
 // find another way maybe?
