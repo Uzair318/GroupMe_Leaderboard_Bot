@@ -1,6 +1,7 @@
-var http, director, cool, bot, router, server, port;
+var http, axios, director, cool, bot, router, server, port;
 
 http        = require('http');
+axios       = require('axios');
 director    = require('director');
 cool        = require('cool-ascii-faces');
 bot         = require('./bot.js');
