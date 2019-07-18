@@ -12,9 +12,7 @@ const msgLimit = '100';
 
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
-
-
-// find another way maybe?
+/*
 // same thing as curl
 axios.get(url)
   .then(function (response) {
@@ -27,7 +25,7 @@ axios.get(url)
     // handle error
     console.log(error);
   })
-
+*/
 function respond() {//* */
   var request = JSON.parse(this.req.chunks[0]),
       //botRegex = /^\/cool guy$/;
