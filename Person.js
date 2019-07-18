@@ -1,3 +1,4 @@
+/*
 class Person {
     constructor(givenName) {
         this.name = givenName;
@@ -25,4 +26,4 @@ class Person {
     }
 
 
-} //Person
+} //Person */
