@@ -1,7 +1,7 @@
 {
-  "name": "Cool guy bot",
-  "description": "Basic Groupme Bot written in Node",
-  "repository": "https://github.com/petemcgrath/cool-guy-bot",
-  "logo": "http://www.tailgate365.com/wp-content/uploads/2011/06/tom-hanks-906.jpg",
+  "name": "Meme Judge",
+  "description": "Basic Groupme Bot written in Node. Functions as Meme Chat Leaderboard",
+  "repository": "https://dashboard.heroku.com/apps/meme-chat-bot",
+  "logo": "https://i.groupme.com/1280x720.jpeg.c2dc9481a71542eabf88c2df97d07a2e",
   "keywords": []
 }
