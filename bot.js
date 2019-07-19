@@ -12,7 +12,7 @@ const msgLimit = '100';
 
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
-
+var messages;
 
 // same thing as curl
 axios.get(url)
@@ -20,7 +20,7 @@ axios.get(url)
     // gets response and prints messages
     
     //messages is in JSON form
-    var messages = response.data.response.messages;   //function scope on variables
+    messages = response.data.response.messages;   //function scope on variables
 
     //for debugging purposes
     //console.log(JSON.stringify(messages, '', 2)); 
@@ -41,15 +41,18 @@ axios.get(url)
 
 
 //go through JSON and instantiate/increment Person objects
+  memberUsage = 0;
   for(i = 0; i < posts.length; i++) {
     currentID = posts[i].ID;
     //if this person has not been instantiated yet
     if(!Members.includes(posts[i].ID)) {
-      Members[i] = new Person(posts[i].name, posts[i].ID);
+      Members[memberUsage] = new Person(posts[i].name, posts[i].ID);
 
       //increment the Person
-      Members[i].plusPost(1);
-      Members[i].plusLikes(posts[i].favorited_by.length);
+      Members[memberUsage].plusPost(1);
+      Members[memberUsage].plusLikes(posts[i].favorited_by.length);
+
+      memberUsage++;
 
     } else { //increment the person
 
