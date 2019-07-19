@@ -20,7 +20,7 @@ axios.get(url)
     // gets response and prints messages
     
     //messages is in JSON form
-    const messages = response.data.response.messages;   //function scope on variables
+    var messages = response.data.response.messages;   //function scope on variables
 
     //for debugging purposes
     //console.log(JSON.stringify(messages, '', 2)); 
