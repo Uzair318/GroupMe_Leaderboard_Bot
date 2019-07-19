@@ -12,7 +12,7 @@ const msgLimit = '100';
 
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
-var messages;
+var messagesJSON;
 
 // same thing as curl
 axios.get(url)
@@ -20,7 +20,7 @@ axios.get(url)
     // gets response and prints messages
     
     //messages is in JSON form
-    messages = response.data.response.messages;   //function scope on variables
+    messagesJSON = response.data.response.messages;   //function scope on variables
 
     //for debugging purposes
     //console.log(JSON.stringify(messages, '', 2)); 
@@ -32,7 +32,7 @@ axios.get(url)
   })
 
   //arrays grow dynamically, no need to instantiate length
-  var posts = JSON.parse(JSON.stringify(messages));
+  var posts = JSON.parse(messagesJSON);
   var Members = []; //array filled with Person objects
 
   //output for debugging
