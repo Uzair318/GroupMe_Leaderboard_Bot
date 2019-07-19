@@ -32,7 +32,7 @@ axios.get(url)
   })
 
   //arrays grow dynamically, no need to instantiate length
-  var posts = JSON.parse(messagesJSON);
+  posts = JSON.parse(messagesJSON);
   var Members = []; //array filled with Person objects
 
   //output for debugging
