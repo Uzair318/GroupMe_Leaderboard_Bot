@@ -13,18 +13,80 @@ const msgLimit = '100';
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
 
+
 // same thing as curl
 axios.get(url)
   .then(function (response) {
     // gets response and prints messages
-    const messages = response.data.response.messages;
-    console.log(JSON.stringify(messages, '', 2));
+    
+    //messages is in JSON form
+    const messages = response.data.response.messages;   //function scope on variables
+
+    //for debugging purposes
+    //console.log(JSON.stringify(messages, '', 2)); 
 
   })
   .catch(function (error) {
     // handle error
     console.log(error);
   })
+
+  //arrays grow dynamically, no need to instantiate length
+  var posts = JSON.parse(messages);
+  var Members = []; //array filled with Person objects
+
+  //output for debugging
+  console.log("The number of members in the chat are: " + posts.length);
+
+
+
+//go through JSON and instantiate/increment Person objects
+  for(i = 0; i < posts.length; i++) {
+    currentID = posts[i].ID;
+    //if this person has not been instantiated yet
+    if(!Members.includes(posts[i].ID)) {
+      Members[i] = new Person(posts[i].name, posts[i].ID);
+
+      //increment the Person
+      Members[i].plusPost(1);
+      Members[i].plusLikes(posts[i].favorited_by.length);
+
+    } else { //increment the person
+
+      //find the Person object corresponding with this post
+      for(j = 0; j < Members.length; j++) {
+        if(Members[j].ID == currentID) {
+          //increment the person
+          Members[j].plusPost(1);
+          Members[j].plusLikes(posts[i].favorited_by.length);
+          break;
+        } //if
+      } //for
+
+    } //if-else
+  } //for
+
+  for(k = 0; k < Members.length; k++) {
+    console.log(Members[k]);
+  }
+
+  //updates the array
+  function getStats() {
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function respond() {//* */
   var request = JSON.parse(this.req.chunks[0]),
@@ -47,6 +109,8 @@ function respond() {//* */
     this.res.end();
   }
 }
+
+
 
 function postMessage() {
   var botResponse, options, body, botReq;
@@ -123,4 +187,5 @@ botReq.on('timeout', function(err) {
 botReq.end(JSON.stringify(body));
 
 }
+
 exports.respond = respond;

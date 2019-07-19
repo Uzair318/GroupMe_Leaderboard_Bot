@@ -1,6 +1,7 @@
 class Person {
-    constructor(givenName) {
+    constructor(givenName, id) {
         this.name = givenName;
+        this.ID = id;
         this.numPosts = 0;
         this.numLikes = 0;
 
