@@ -1,67 +1,97 @@
 const axios = require('axios');
-var HTTPS = require('https');
+const HTTPS = require('https');
 
 
 var botID = process.env.BOT_ID;
+
 
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
 const token = 'token=1df9001037c901372aca3263649c7787';
 const groupId = '50769460';
 const msgLimit = '100';
-
-// GET /groups/:group_id/messages
+  // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
-var messagesJSON;
 
-// same thing as curl
-axios.get(url)
-  .then(function (response) {
-    // gets response and prints messages
-    
-    //messages is in JSON form
-    messagesJSON = response.data.response.messages;   //function scope on variables
+//use above url to get messages for specific groupchat
+getMessages(url)
+  .then(messagesJSON => {
+      //output for debugging
+    console.log(JSON.stringify(messagesJSON, '', 2));
 
-    //for debugging purposes
-    //console.log(JSON.stringify(messages, '', 2)); 
+    //NEXT:
+    //Rewrite getMemberStats with a promise
 
+    /*
+    //arrays grow dynamically, no need to instantiate length
+    var Members = []; //array filled with Person objects
+
+    Members = getMemberStats(messagesJSON, Members);
+
+      //output for debugging
+      console.log("The number of members in the chat are: " + messagesJSON.length);
+      console.log(Members);
+    */
   })
-  .catch(function (error) {
-    // handle error
+  .catch(error => {
     console.log(error);
   })
 
-  //arrays grow dynamically, no need to instantiate length
-  posts = JSON.parse(messagesJSON);
-  var Members = []; //array filled with Person objects
-
-  //output for debugging
-  console.log("The number of members in the chat are: " + posts.length);
 
 
 
-//go through JSON and instantiate/increment Person objects
+  //gets messagesJSON
+function getMessages(URL) {
+  const messagePromise = new Promise((resolve, reject) => {
+    axios.get(URL)
+    .then(function (response) {
+      // gets response and prints messages
+        
+        //messages is in JSON form
+      var mJSON = response.data.response.messages;   //function scope on variables
+
+        //for debugging purposes
+      //console.log(JSON.stringify(mJSON, '', 2)); 
+
+      //return mJSON; 
+      resolve(mJSON);
+    })
+    .catch(function (error) {
+    // handle error
+    reject(error);
+    })
+  })
+  return messagePromise;
+}
+
+
+
+  //updates the array
+function getMemberStats(posts, members) {
+  //go through JSON and instantiate/increment Person objects
   memberUsage = 0;
-  for(i = 0; i < posts.length; i++) {
-    currentID = posts[i].ID;
+  for(i = 0; i < posts.length(); i++) {
+
+    currentID = posts[i].ID; //using ID to define owner of current post
+
     //if this person has not been instantiated yet
-    if(!Members.includes(posts[i].ID)) {
-      Members[memberUsage] = new Person(posts[i].name, posts[i].ID);
+    if(!members.includes(posts[i].ID)) {
+      members[memberUsage] = new Person(posts[i].name, posts[i].ID);
 
       //increment the Person
-      Members[memberUsage].plusPost(1);
-      Members[memberUSage].plusLikes(posts[i].favorited_by.length);
+      members[memberUsage].plusPost(1);
+      members[memberUSage].plusLikes(posts[i].favorited_by.length);
 
       memberUsage++;
 
     } else { //increment the person
 
       //find the Person object corresponding with this post
-      for(j = 0; j < Members.length; j++) {
-        if(Members[j].ID == currentID) {
+      for(j = 0; j < members.length; j++) {
+        if(members[j].ID == currentID) {
           //increment the person
-          Members[j].plusPost(1);
-          Members[j].plusLikes(posts[i].favorited_by.length);
+          members[j].plusPost(1);
+          members[j].plusLikes(posts[i].favorited_by.length);
           break;
         } //if
       } //for
@@ -69,14 +99,8 @@ axios.get(url)
     } //if-else
   } //for
 
-  for(k = 0; k < Members.length; k++) {
-    console.log(Members[k]);
-  }
-
-  //updates the array
-  function getStats() {
-
-  }
+  return members;
+}
 
 
 
@@ -91,7 +115,7 @@ axios.get(url)
 
 
 
-function respond() {//* */
+function respond() {
   var request = JSON.parse(this.req.chunks[0]),
       //botRegex = /^\/cool guy$/;
       botRegex = /^verdict\?$/i;  // i flag -> case insensitive string
@@ -191,4 +215,4 @@ botReq.end(JSON.stringify(body));
 
 }
 
-exports.respond = respond;
+exports.respond = respond; 
