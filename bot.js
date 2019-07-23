@@ -1,6 +1,6 @@
 const axios = require('axios');
 const HTTPS = require('https');
-
+const Person = require('./Person.js');
 
 var botID = process.env.BOT_ID;
 
@@ -17,17 +17,23 @@ const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit
 getMessages(url)
   .then(messagesJSON => {
       //output for debugging
-    console.log(JSON.stringify(messagesJSON, '', 2));
+    //console.log(JSON.stringify(messagesJSON, '', 2));
 
     //NEXT:
     //Rewrite getMemberStats with a promise
 
-    /*
+    
     //arrays grow dynamically, no need to instantiate length
     var Members = []; //array filled with Person objects
+    
 
-    Members = getMemberStats(messagesJSON, Members);
-
+    Members = getMemberStats(messagesJSON, Members)
+    .then(Members => {
+       console.log(Members);
+       //console.log(Members.length);
+    })
+    
+    /*
       //output for debugging
       console.log("The number of members in the chat are: " + messagesJSON.length);
       console.log(Members);
@@ -57,10 +63,11 @@ function getMessages(URL) {
       resolve(mJSON);
     })
     .catch(function (error) {
-    // handle error
-    reject(error);
+      // handle error
+      reject(error);
     })
   })
+  //return the promise
   return messagePromise;
 }
 
@@ -68,38 +75,53 @@ function getMessages(URL) {
 
   //updates the array
 function getMemberStats(posts, members) {
-  //go through JSON and instantiate/increment Person objects
-  memberUsage = 0;
-  for(i = 0; i < posts.length(); i++) {
+  const statsPromise = new Promise((resolve, reject) => {
+    //go through JSON and instantiate/increment Person objects
+    memberUsage = 0;
+    for(i = 0; i < Object.keys(posts).length; i++) {
 
-    currentID = posts[i].ID; //using ID to define owner of current post
+      currentID = posts[i].user_id; //using ID to define owner of current post
+      var currentPersonIndex;
+      //sender must be a user
+      if(posts[i].sender_type == 'user') {
 
-    //if this person has not been instantiated yet
-    if(!members.includes(posts[i].ID)) {
-      members[memberUsage] = new Person(posts[i].name, posts[i].ID);
+        //find if person is already instantiated
+        personExists = false;
+        for(y = 0; y < memberUsage; y++) {
+            if (members[y].ID == currentID) {
+                personExists = true;
+                currentPersonIndex = y;
+                break;
+            } //if
+        } //for
 
-      //increment the Person
-      members[memberUsage].plusPost(1);
-      members[memberUSage].plusLikes(posts[i].favorited_by.length);
+        if(personExists) { //if person exists
 
-      memberUsage++;
-
-    } else { //increment the person
-
-      //find the Person object corresponding with this post
-      for(j = 0; j < members.length; j++) {
-        if(members[j].ID == currentID) {
           //increment the person
-          members[j].plusPost(1);
-          members[j].plusLikes(posts[i].favorited_by.length);
-          break;
-        } //if
-      } //for
+          members[currentPersonIndex].plusPost(1);
+          members[currentPersonIndex].plusLikes(posts[i].favorited_by.length);
 
-    } //if-else
-  } //for
 
-  return members;
+        } else {//if not instantiated
+        
+          members[memberUsage] = new Person(posts[i].name, currentID);
+
+          //increment the Person
+          members[memberUsage].plusPost(1);
+          members[memberUsage].plusLikes(posts[i].favorited_by.length);
+
+          memberUsage++;
+
+        
+
+        } //if-else
+      } //if
+    } //for
+    resolve(members);  
+  })
+
+
+  return statsPromise;
 }
 
 
