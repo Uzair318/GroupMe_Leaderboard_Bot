@@ -233,10 +233,10 @@ function postMessage() {
 
 
 
-function postResults(outputString) {
+function postResults() { //outputString
   var botResponse, options, body, botReq;
 
-  botResponse = outputString; //Should be in string form
+  botResponse = "you get stats!";//outputString; //Should be in string form
 
   options = {
     hostname: 'api.groupme.com',
