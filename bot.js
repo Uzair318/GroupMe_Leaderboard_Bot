@@ -181,7 +181,7 @@ function respond() {
     this.res.end();
   } else if(request.text && (request.text == "/post results")) {
     this.res.writeHead(200);
-    postResults();
+    postResults(outputString);
     this.res.end();
   } 
   else {
@@ -233,10 +233,10 @@ function postMessage() {
 
 
 
-function postResults() { //outputString
+function postResults(outputString) { //outputString
   var botResponse, options, body, botReq;
 
-  botResponse = "you get stats!";//outputString; //Should be in string form
+  botResponse = outputString;//outputString; //Should be in string form
 
   options = {
     hostname: 'api.groupme.com',
