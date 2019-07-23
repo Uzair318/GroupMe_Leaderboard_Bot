@@ -16,28 +16,58 @@ const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit
 //use above url to get messages for specific groupchat
 getMessages(url)
   .then(messagesJSON => {
-      //output for debugging
-    //console.log(JSON.stringify(messagesJSON, '', 2));
 
-    //NEXT:
-    //Rewrite getMemberStats with a promise
+    /*output for debugging
+    console.log(JSON.stringify(messagesJSON, '', 2));
+    */
 
-    
-    //arrays grow dynamically, no need to instantiate length
-    var Members = []; //array filled with Person objects
+    var Members = []; //array filled with Person objects (grows dynamically)
     
 
     Members = getMemberStats(messagesJSON, Members)
     .then(Members => {
+      /*
        console.log(Members);
-       //console.log(Members.length);
-    })
+       */
+        //output for debugging
+       //console.log("The number of members in the chat are: " + Members.length);
+
+
+      
+      //console.log(comparePeople(Members[0], Members[1]));
+
+        /*compares Person Objects
+         -1 if p1 has a higher Like-Post-ratio
+          0 if IDs are the same or if Like-Post-ratio is same
+          1 if p1 has a lower Like-Post-ratio
+
+          IN ORDER BY RANK (1 > 2 > 3, etc.)
+        */
+      sortedMembers = Members.sort(function(p1,p2) {//arr.sort([compareFunction])
+        if (p1.likePostRatio() > p2.likePostRatio()) {
+          return -1;
+        } else if(p1.likePostRatio() == p2.likePostRatio()) {
+          return 0;
+        } else {
+          return 1;
+        }
+      });
+      /*
+      console.log("Sorted Array: ");
+      console.log(sortedMembers);
+      */
+
+      //first 5 Persons in sortedMembers are highest ranked
+
+      outputString = "Leaderboard: \n";
+
+      for(z = 0; z < 5 && z < sortedMembers.length; z++) { //only want 5, or all if less than five
+        outputString += (z + 1) + ". " + sortedMembers[z] + "\n";
+      }
+        //console.log(outputString);
+
+    })  
     
-    /*
-      //output for debugging
-      console.log("The number of members in the chat are: " + messagesJSON.length);
-      console.log(Members);
-    */
   })
   .catch(error => {
     console.log(error);
@@ -82,8 +112,8 @@ function getMemberStats(posts, members) {
 
       currentID = posts[i].user_id; //using ID to define owner of current post
       var currentPersonIndex;
-      //sender must be a user
-      if(posts[i].sender_type == 'user') {
+      //sender must be a user and post must be a picture
+      if(posts[i].sender_type == 'user' && posts[i].attachments.length > 0) {
 
         //find if person is already instantiated
         personExists = false;
@@ -124,9 +154,7 @@ function getMemberStats(posts, members) {
   return statsPromise;
 }
 
-
-
-
+  
 
 
 
@@ -150,6 +178,10 @@ function respond() {
   else if(request.text && (request.text == "hi")) {   //if you say hi in chat
     this.res.writeHead(200);
     postMessage2();
+    this.res.end();
+  } else if(request.text && (request.text == "/post results")) {
+    this.res.writeHead(200);
+    postResults();
     this.res.end();
   } 
   else {
@@ -200,6 +232,46 @@ function postMessage() {
 
 
 
+
+function postResults(outputString) {
+  var botResponse, options, body, botReq;
+
+  botResponse = outputString; //Should be in string form
+
+  options = {
+    hostname: 'api.groupme.com',
+    path: '/v3/bots/post',
+    method: 'POST'
+  };
+
+  body = {
+    "bot_id" : botID,
+    "text" : botResponse
+  };
+
+
+  console.log('sending ' + botResponse + ' to ' + botID);
+
+  botReq = HTTPS.request(options, function(res) {
+      if(res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
+  });
+
+  botReq.on('error', function(err) {
+    console.log('error posting message '  + JSON.stringify(err));
+  });
+  botReq.on('timeout', function(err) {
+    console.log('timeout posting message '  + JSON.stringify(err));
+  });
+  botReq.end(JSON.stringify(body));
+}
+
+
+
+/*
 function postMessage2() {
   var botResponse, options, body, botReq;
 
@@ -236,5 +308,5 @@ botReq.on('timeout', function(err) {
 botReq.end(JSON.stringify(body));
 
 }
-
+*/
 exports.respond = respond; 

@@ -5,6 +5,7 @@ class Person {
         this._numPosts = 0;
         this._numLikes = 0;
 
+        //this._likePostRatio = this._numLikes / this.numPosts;
     }
 
     set name(givenName) {
@@ -14,6 +15,10 @@ class Person {
     set ID(id) {
         this._ID = id;
     }
+    /*
+    set likePostRatio(likes, posts) {
+        this._likePostRatio = likes + posts;
+    }*/
 
     get name() {
         return this.name;
@@ -27,15 +32,27 @@ class Person {
     get numLikes() {
         return this._numLikes;
     }
+    /*
+    get likePostRatio() {
+        return this._likePostRatio;
+    }*/
 
     plusPost(num) {
         this._numPosts += num;
+        this._likePostRatio
     }
     
     plusLikes(num) {
         this._numLikes += num;
     }
 
+    likePostRatio() {
+        return (this._numLikes/this._numPosts);
+    }
+
+    toString() {
+        return "" + this._name.padEnd(20) + " Like-Post ratio: " + this.likePostRatio().toFixed(2);    
+    }
 
 }; //Person 
 
