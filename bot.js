@@ -8,7 +8,7 @@ var botID = process.env.BOT_ID;
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
 const token = 'token=1df9001037c901372aca3263649c7787';
-const groupId = '50769460';
+const groupId = 40490400; //'50769460'; commented = Meme Court, other = Black Rose
 const msgLimit = '100';
   // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
