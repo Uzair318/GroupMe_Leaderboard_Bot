@@ -3,12 +3,13 @@ const HTTPS = require('https');
 const Person = require('./Person.js');
 
 var botID = process.env.BOT_ID;
-
+  //"6d3432608041f855ed6ac6b388" = Meme Judge
+  //"ac9aa940f56910279f8ddd7e8a" = Black Bot
 
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
 const token = 'token=1df9001037c901372aca3263649c7787';
-const groupId = '50769460';//'40490400'; //507... = Meme Court, 404... = Black Rose
+const groupId = '40490400';//'50769460'; //507... = Meme Court, 404... = Black Rose
 const msgLimit = '100';
   // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
