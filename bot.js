@@ -8,7 +8,7 @@ var botID = process.env.BOT_ID;
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
 const token = 'token=1df9001037c901372aca3263649c7787';
-const groupId = '50769460';//'40490400'; //used = Meme Court, commented = Black Rose
+const groupId = '50769460';//'40490400'; //507... = Meme Court, 404... = Black Rose
 const msgLimit = '100';
   // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
@@ -157,14 +157,7 @@ function getMemberStats(posts, members) {
   
 
 
-
-
-
-
-
-
-
-
+  //response functions
 function respond() {
   var request = JSON.parse(this.req.chunks[0]),
       //botRegex = /^\/cool guy$/;
@@ -174,12 +167,7 @@ function respond() {
     this.res.writeHead(200);
     postMessage();
     this.res.end();
-  }
-  else if(request.text && (request.text == "hi")) {   //if you say hi in chat
-    this.res.writeHead(200);
-    postMessage2();
-    this.res.end();
-  } else if(request.text && (request.text == "/post results")) {
+  } else if(request.text && (request.text == "/postResults")) {
     this.res.writeHead(200);
     postResults(outputString);
     this.res.end();
@@ -236,7 +224,7 @@ function postMessage() {
 function postResults(outputString) { //outputString
   var botResponse, options, body, botReq;
 
-  botResponse = outputString;//outputString; //Should be in string form
+  botResponse = outputString;//Should be in string form
 
   options = {
     hostname: 'api.groupme.com',
@@ -271,42 +259,4 @@ function postResults(outputString) { //outputString
 
 
 
-/*
-function postMessage2() {
-  var botResponse, options, body, botReq;
-
-  botResponse = "whats good";
-
-  options = {
-    hostname: 'api.groupme.com',
-    path: '/v3/bots/post',
-    method: 'POST'
-  };
-
-  body = {
-    "bot_id" : botID,
-    "text" : botResponse
-  };
-
-
-  console.log('sending ' + botResponse + ' to ' + botID);
-
-  botReq = HTTPS.request(options, function(res) {
-    if(res.statusCode == 202) {
-      //neat
-    } else {
-      console.log('rejecting bad status code ' + res.statusCode);
-    }
-});
-
-botReq.on('error', function(err) {
-  console.log('error posting message '  + JSON.stringify(err));
-});
-botReq.on('timeout', function(err) {
-  console.log('timeout posting message '  + JSON.stringify(err));
-});
-botReq.end(JSON.stringify(body));
-
-}
-*/
 exports.respond = respond; 
