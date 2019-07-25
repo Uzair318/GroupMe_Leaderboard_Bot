@@ -6,12 +6,12 @@ const Person = require('./Person.js');
  *  TO CHANGE BOT TO NEW GROUPCHAT
  *    1. Switch groupId
  *    2. Switch BOT_ID in .env
- *    3. Switch BOT_ID on Heroku
+ *    3. Switch BOT_ID var on Heroku
  */
 
 
 var botID = process.env.BOT_ID;
-  //"6d3432608041f855ed6ac6b388" = Meme Judge
+  //"6d3432608041f855ed6ac6b388" = Meme Judge	
   //"ac9aa940f56910279f8ddd7e8a" = Black Bot
 
 // https://dev.groupme.com/docs/v3 ~ API documentation
@@ -68,14 +68,15 @@ getMessages(url)
 
       //first 5 Persons in sortedMembers are highest ranked
 
-      outputString = "Leaderboard: \n";
+      outputString = "Leaderboard: \n"; //ADD NAME OF GROUPCHAT!!!
 
       for(z = 0; z < 5 && z < sortedMembers.length; z++) { //only want 5, or all if less than five
         outputString += (z + 1) + ". " + sortedMembers[z] + "\n";
       }
       /*
-        console.log(outputString);
       */
+        console.log(outputString);
+      
     })  
     
   })
