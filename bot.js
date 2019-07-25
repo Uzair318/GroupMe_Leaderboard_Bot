@@ -2,6 +2,14 @@ const axios = require('axios');
 const HTTPS = require('https');
 const Person = require('./Person.js');
 
+/*
+ *  TO CHANGE BOT TO NEW GROUPCHAT
+ *    1. Switch groupId
+ *    2. Switch BOT_ID in .env
+ *    3. Switch BOT_ID on Heroku
+ */
+
+
 var botID = process.env.BOT_ID;
   //"6d3432608041f855ed6ac6b388" = Meme Judge
   //"ac9aa940f56910279f8ddd7e8a" = Black Bot
@@ -31,7 +39,7 @@ getMessages(url)
        console.log(Members);
        */
         //output for debugging
-       //console.log("The number of members in the chat are: " + Members.length);
+       console.log("The number of members in the chat are: " + Members.length);
 
 
       
@@ -53,10 +61,10 @@ getMessages(url)
           return 1;
         }
       });
-      /*
+      /* */
       console.log("Sorted Array: ");
       console.log(sortedMembers);
-      */
+      
 
       //first 5 Persons in sortedMembers are highest ranked
 
@@ -65,8 +73,9 @@ getMessages(url)
       for(z = 0; z < 5 && z < sortedMembers.length; z++) { //only want 5, or all if less than five
         outputString += (z + 1) + ". " + sortedMembers[z] + "\n";
       }
-        //console.log(outputString);
-
+      /*
+        console.log(outputString);
+      */
     })  
     
   })
