@@ -17,11 +17,11 @@ var botID = process.env.BOT_ID;
   console.log("botID: ");
   console.log(botID);
    */
-  
+
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
 const token = 'token=1df9001037c901372aca3263649c7787';
-const groupId = '40490400';//'50769460' = Meme Court,  = Black Rose
+const groupId = '50769460';// = Meme Court, '40490400' = Black Rose
 const msgLimit = '100';
   // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
@@ -40,10 +40,10 @@ getMessages(url)
     Members = getMemberStats(messagesJSON, Members)
     .then(Members => {
       /*
-       console.log(Members);
+       console.log("Members: \n" + Members);
        */
         //output for debugging
-       console.log("The number of members in the chat are: " + Members.length);
+       console.log("The number of meme-posting members in the chat are: " + Members.length);
        
 
       
@@ -103,8 +103,10 @@ function getMessages(URL) {
       var mJSON = response.data.response.messages;   //function scope on variables
 
         //for debugging purposes
-      //console.log(JSON.stringify(mJSON, '', 2)); 
-
+      /*
+      console.log(JSON.stringify(mJSON, '', 2)); 
+      console.log("Number of Messages: " + mJSON.length);
+       */
       //return mJSON; 
       resolve(mJSON);
     })
