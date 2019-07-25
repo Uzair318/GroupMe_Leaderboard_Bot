@@ -13,11 +13,15 @@ const Person = require('./Person.js');
 var botID = process.env.BOT_ID;
   //"6d3432608041f855ed6ac6b388" = Meme Judge	
   //"ac9aa940f56910279f8ddd7e8a" = Black Bot
-
+  /*
+  console.log("botID: ");
+  console.log(botID);
+   */
+  
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
 const token = 'token=1df9001037c901372aca3263649c7787';
-const groupId = '50769460';//'50769460' = Meme Court, '40490400' = Black Rose
+const groupId = '40490400';//'50769460' = Meme Court,  = Black Rose
 const msgLimit = '100';
   // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
@@ -40,7 +44,7 @@ getMessages(url)
        */
         //output for debugging
        console.log("The number of members in the chat are: " + Members.length);
-
+       
 
       
       //console.log(comparePeople(Members[0], Members[1]));
@@ -61,10 +65,10 @@ getMessages(url)
           return 1;
         }
       });
-      /* */
-      console.log("Sorted Array: ");
+      /* 
+      console.log("Sorted Array: \n");
       console.log(sortedMembers);
-      
+      */
 
       //first 5 Persons in sortedMembers are highest ranked
 
@@ -74,8 +78,9 @@ getMessages(url)
         outputString += (z + 1) + ". " + sortedMembers[z] + "\n";
       }
       /*
-      */
         console.log(outputString);
+      */
+      
       
     })  
     
