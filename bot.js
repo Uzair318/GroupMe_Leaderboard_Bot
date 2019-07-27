@@ -79,6 +79,8 @@ getMessages(url)
       for(z = 0; z < 5 && z < sortedMembers.length; z++) { //only want 5, or all if less than five
         outputString += (z + 1) + ". " + sortedMembers[z] + "\n";
       }
+      //Displays date and time of call to see if string actually updates
+      outputString += " " + Date.now();
       /**/
         console.log(outputString);
       
@@ -244,7 +246,10 @@ function postMessage() {
 function postResults(outputString) { //outputString
   var botResponse, options, body, botReq;
 
+  
   botResponse = outputString;//Should be in string form
+
+  console.log(outputString);
 
   options = {
     hostname: 'api.groupme.com',
