@@ -2,14 +2,13 @@ const axios = require('axios');
 const HTTPS = require('https');
 const Person = require('./Person.js');
 
-//CURRENT STATE: 
-//  Black Rose 
+//CURRENT STATE: Black Rose 
 
 /*
  *  TO CHANGE BOT TO NEW GROUPCHAT
  *    1. Switch groupId
  *    2. Switch BOT_ID in .env
- *    3. Switch BOT_ID var on Heroku
+ *    3. Switch BOT_ID config var on Heroku (https://dashboard.heroku.com/apps/meme-chat-bot)
  */
 
 
