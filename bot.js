@@ -80,9 +80,10 @@ function createOutput() {
       for(z = 0; z < 5 && z < sortedMembers.length; z++) { //only want 5, or all if less than five
         outputString += (z + 1) + ". " + sortedMembers[z] + "\n";
       }
-      //Displays date and time of call to see if string actually updates
-      outputString += " " + Date.now();
       /*
+      //Displays date and time of call to see if string actually updates
+        outputString += " " + Date.now();
+      
         console.log(outputString);
       */
       resolve(outputString);
