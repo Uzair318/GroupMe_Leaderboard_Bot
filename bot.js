@@ -28,8 +28,9 @@ const msgLimit = '100';
   // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
 
-//use above url to get messages for specific groupchat
-getMessages(url)
+function createOutput() {
+  const outputPromise = new Promise ((resolve, reject) => {
+  getMessages(url)
   .then(messagesJSON => {
 
     /*output for debugging
@@ -81,10 +82,10 @@ getMessages(url)
       }
       //Displays date and time of call to see if string actually updates
       outputString += " " + Date.now();
-      /**/
+      /*
         console.log(outputString);
-      
-      
+      */
+      resolve(outputString);
       
     })  
     
@@ -92,6 +93,10 @@ getMessages(url)
   .catch(error => {
     console.log(error);
   })
+  })
+  return outputPromise;
+}
+//use above url to get messages for specific groupchat
 
 
 
@@ -191,7 +196,7 @@ function respond() {
     this.res.end();
   } else if(request.text && (request.text == "/postResults")) {
     this.res.writeHead(200);
-    postResults(outputString);
+    postResults();
     this.res.end();
   } 
   else {
@@ -243,44 +248,50 @@ function postMessage() {
 
 
 
-function postResults(outputString) { //outputString
+function postResults() {
   var botResponse, options, body, botReq;
 
-  
-  botResponse = outputString;//Should be in string form
+  responseString = createOutput()
+    .then(responseString => {
+      botResponse = responseString; //Should be in string form
 
-  console.log(outputString);
+        /*
+        console.log(responseString);
+        */
+        options = {
+          hostname: 'api.groupme.com',
+          path: '/v3/bots/post',
+          method: 'POST'
+        };
 
-  options = {
-    hostname: 'api.groupme.com',
-    path: '/v3/bots/post',
-    method: 'POST'
-  };
-
-  body = {
-    "bot_id" : botID,
-    "text" : botResponse
-  };
+        body = {
+          "bot_id" : botID,
+          "text" : botResponse
+        };
 
 
-  console.log('sending ' + botResponse + ' to ' + botID);
+        console.log('sending ' + botResponse + ' to ' + botID);
 
-  botReq = HTTPS.request(options, function(res) {
-      if(res.statusCode == 202) {
-        //neat
-      } else {
-        console.log('rejecting bad status code ' + res.statusCode);
+        botReq = HTTPS.request(options, function(res) {
+            if(res.statusCode == 202) {
+              //neat
+            } else {
+              console.log('rejecting bad status code ' + res.statusCode);
+            }
+        });
+
+        botReq.on('error', function(err) {
+          console.log('error posting message '  + JSON.stringify(err));
+        });
+        botReq.on('timeout', function(err) {
+          console.log('timeout posting message '  + JSON.stringify(err));
+        });
+        botReq.end(JSON.stringify(body));
       }
-  });
+    )}
 
-  botReq.on('error', function(err) {
-    console.log('error posting message '  + JSON.stringify(err));
-  });
-  botReq.on('timeout', function(err) {
-    console.log('timeout posting message '  + JSON.stringify(err));
-  });
-  botReq.end(JSON.stringify(body));
-}
+  
+  
 
 
 
