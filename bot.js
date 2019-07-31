@@ -187,7 +187,7 @@ function getMemberStats(posts, members) {
 
 
   //response functions
-function respond() {
+function respond(Admins) {
   var request = JSON.parse(this.req.chunks[0]),
       botRegex = /^verdict\?$/i;  // i flag -> case insensitive string
 
@@ -199,7 +199,7 @@ function respond() {
     this.res.end();
   } else if(request.text && (request.text == "/postResults")) {
     this.res.writeHead(200);
-    postResults(senderID);
+    postResults(senderID, Admins);
     this.res.end();
   } 
   else {
@@ -250,7 +250,7 @@ function postMessage() {
 
 
 
-function postResults(senderID) {
+function postResults(senderID, Admins) {
   var botResponse, options, body, botReq;
   if(Admins.includes(senderID)) {
     responseString = createOutput()
