@@ -195,7 +195,7 @@ function respond() {
 
   if(request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
     this.res.writeHead(200);
-    postMessage();
+    postMessage(senderID);
     this.res.end();
   } else if(request.text && (request.text == "/postResults")) {
     this.res.writeHead(200);
@@ -211,7 +211,7 @@ function respond() {
 
 
 
-function postMessage() {
+function postMessage(senderID) {
   var botResponse, options, body, botReq;
 
   //addition for debugging purposes
