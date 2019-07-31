@@ -293,7 +293,7 @@ function postResults(senderID) {
       }
     )}
     else { //not allowed
-      botResponse = "Sorry, you do not have permission to do this."; //Should be in string form
+      botResponse = "Sorry, you do not have permission to do this." + "\n senderID: " + senderID; //Should be in string form
 
         options = {
           hostname: 'api.groupme.com',
