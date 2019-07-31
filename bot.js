@@ -40,8 +40,7 @@ function createOutput() {
     */
 
     var Members = []; //array filled with Person objects (grows dynamically)
-    var Admins = [18197056, 39735084, 30109965];  //array filled with user_id's of members that are allowed to display scoreboard
-               //[Izu     , Uzair   , Dan     ,]
+    
     Members = getMemberStats(messagesJSON, Members)
     .then(Members => {
       /*
@@ -187,7 +186,7 @@ function getMemberStats(posts, members) {
 
 
   //response functions
-function respond(Admins) {
+function respond() {
   var request = JSON.parse(this.req.chunks[0]),
       botRegex = /^verdict\?$/i;  // i flag -> case insensitive string
 
@@ -199,7 +198,7 @@ function respond(Admins) {
     this.res.end();
   } else if(request.text && (request.text == "/postResults")) {
     this.res.writeHead(200);
-    postResults(senderID, Admins);
+    postResults(senderID);
     this.res.end();
   } 
   else {
@@ -250,10 +249,11 @@ function postMessage() {
 
 
 
-function postResults(senderID, Admins) {
+function postResults(senderID) {
   var botResponse, options, body, botReq;
-
-  if(Admins.indexOf(senderID) !== -1) {
+  const Admins = [18197056, 39735084, 30109965];  //array filled with user_id's of members that are allowed to display scoreboard
+               //[Izu     , Uzair   , Dan     ,]
+  if(Admins.includes(senderID)) {//(Admins.indexOf(senderID) !== -1) {
     responseString = createOutput()
     .then(responseString => {
       botResponse = responseString; //Should be in string form
