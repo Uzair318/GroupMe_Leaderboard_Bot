@@ -252,7 +252,8 @@ function postMessage() {
 
 function postResults(senderID, Admins) {
   var botResponse, options, body, botReq;
-  if(Admins.includes(senderID)) {
+
+  if(Admins.indexOf(senderID) !== -1) {
     responseString = createOutput()
     .then(responseString => {
       botResponse = responseString; //Should be in string form
