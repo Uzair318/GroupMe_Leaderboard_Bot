@@ -251,7 +251,7 @@ function postMessage() {
 
 function postResults(senderID) {
   var botResponse, options, body, botReq;
-  const Admins = [18197056, 39735084, 30109965];  //array filled with user_id's of members that are allowed to display scoreboard
+  const Admins = ['18197056', '39735084', '30109965'];  //array filled with user_id's of members that are allowed to display scoreboard
                //[Izu     , Uzair   , Dan     ,]
   if(Admins.includes(senderID)) {//(Admins.indexOf(senderID) !== -1) {
     responseString = createOutput()
