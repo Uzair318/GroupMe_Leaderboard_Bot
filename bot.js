@@ -15,6 +15,7 @@ const Person = require('./Person.js');
 var botID = process.env.BOT_ID;
   //"6d3432608041f855ed6ac6b388" = Meme Judge	
   //"ac9aa940f56910279f8ddd7e8a" = Black Bot
+  // "" = Meme Chat
   /*
   console.log("botID: ");
   console.log(botID);
@@ -23,7 +24,7 @@ var botID = process.env.BOT_ID;
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
 const token = 'token=1df9001037c901372aca3263649c7787';
-const groupId = '50769460';//  = Meme Court, '40490400' = Black Rose
+const groupId = '50769460';// '50769460' = Meme Court, '40490400' = Black Rose, '26930811' = Meme Chat
 const msgLimit = '100';
   // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
@@ -32,14 +33,15 @@ function createOutput() {
   const outputPromise = new Promise ((resolve, reject) => {
   getMessages(url)
   .then(messagesJSON => {
-
+    
     /*output for debugging
+    console.log("Number of messages recieved: " + messagesJSON.length);
     console.log(JSON.stringify(messagesJSON, '', 2));
     */
 
     var Members = []; //array filled with Person objects (grows dynamically)
-    
-
+    var Admins = [18197056, 39735084, 30109965];  //array filled with user_id's of members that are allowed to display scoreboard
+               //[Izu     , Uzair   , Dan     ,]
     Members = getMemberStats(messagesJSON, Members)
     .then(Members => {
       /*
@@ -48,7 +50,7 @@ function createOutput() {
         //output for debugging
        console.log("The number of meme-posting members in the chat are: " + Members.length);
        
-
+      
       
       //console.log(comparePeople(Members[0], Members[1]));
 
@@ -111,7 +113,6 @@ function getMessages(URL) {
         
         //messages is in JSON form
       var mJSON = response.data.response.messages;   //function scope on variables
-
         //for debugging purposes
       /*
       console.log(JSON.stringify(mJSON, '', 2)); 
@@ -188,8 +189,9 @@ function getMemberStats(posts, members) {
   //response functions
 function respond() {
   var request = JSON.parse(this.req.chunks[0]),
-      //botRegex = /^\/cool guy$/;
       botRegex = /^verdict\?$/i;  // i flag -> case insensitive string
+
+      var senderID = request.sender_id;
 
   if(request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
     this.res.writeHead(200);
@@ -212,8 +214,8 @@ function respond() {
 function postMessage() {
   var botResponse, options, body, botReq;
 
-  //botResponse = cool();
-  botResponse = "Guilty!"; //Should be in string form
+  //addition for debugging purposes
+  botResponse = "Guilty!" + "\n" + "senderID = " + senderID; //Should be in string form
 
   options = {
     hostname: 'api.groupme.com',
