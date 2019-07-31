@@ -256,7 +256,7 @@ function postResults(senderID) {
   if(Admins.includes(senderID)) {//(Admins.indexOf(senderID) !== -1) {
     responseString = createOutput()
     .then(responseString => {
-      botResponse = responseString; //Should be in string form
+      botResponse = responseString + "\n senderID: " + senderID; //Should be in string form
 
         /*
         console.log(responseString);
