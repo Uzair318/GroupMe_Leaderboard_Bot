@@ -15,7 +15,7 @@ const Person = require('./Person.js');
 var botID = process.env.BOT_ID;
   //"6d3432608041f855ed6ac6b388" = Meme Judge	
   //"ac9aa940f56910279f8ddd7e8a" = Black Bot
-  // "" = Meme Chat
+  //                          "" = Meme Chat
   /*
   console.log("botID: ");
   console.log(botID);
@@ -24,7 +24,7 @@ var botID = process.env.BOT_ID;
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
 const token = 'token=1df9001037c901372aca3263649c7787';
-const groupId = '50769460';// '50769460' = Meme Court, '40490400' = Black Rose, '26930811' = Meme Chat
+const groupId = '40490400';// '50769460' = Meme Court, '40490400' = Black Rose, '26930811' = Meme Chat
 const msgLimit = '100';
   // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
@@ -250,13 +250,15 @@ function postMessage() {
 
 
 function postResults(senderID) {
+
   var botResponse, options, body, botReq;
   const Admins = ['18197056', '39735084', '30109965'];  //array filled with user_id's of members that are allowed to display scoreboard
-               //[Izu     , Uzair   , Dan     ,]
-  if(Admins.includes(senderID)) {//(Admins.indexOf(senderID) !== -1) {
+               //[ Izu       ,  Uzair   ,  Dan      ,]
+
+  if(Admins.includes(senderID)) {
     responseString = createOutput()
     .then(responseString => {
-      botResponse = responseString + "\n senderID: " + senderID; //Should be in string form
+      botResponse = responseString;// + "\n senderID: " + senderID; //Should be in string form
 
         /*
         console.log(responseString);
@@ -293,7 +295,7 @@ function postResults(senderID) {
       }
     )}
     else { //not allowed
-      botResponse = "Sorry, you do not have permission to do this." + "\n senderID: " + senderID; //Should be in string form
+      botResponse = "Sorry, you do not have permission to do this.";//; + "\n senderID: " + senderID; //Should be in string form
 
         options = {
           hostname: 'api.groupme.com',
