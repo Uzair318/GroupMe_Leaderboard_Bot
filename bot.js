@@ -14,7 +14,7 @@ const Person = require('./Person.js');
 
 var botID = process.env.BOT_ID;
   //"6d3432608041f855ed6ac6b388" = Meme Judge	
-  //"ac9aa940f56910279f8ddd7e8a" = Black Bot
+  //"ac9aa940f56910279f8ddd7e8a" = Black Bot  *
   //                          "" = Meme Chat
   /*
   console.log("botID: ");
