@@ -2,7 +2,7 @@ const axios = require('axios');
 const HTTPS = require('https');
 const Person = require('./Person.js');
 
-//CURRENT STATE: Meme Court 
+//CURRENT STATE: Black Rose 
 
 /*
  *  TO CHANGE BOT TO NEW GROUPCHAT
@@ -15,7 +15,7 @@ const Person = require('./Person.js');
 var botID = process.env.BOT_ID;
   //"6d3432608041f855ed6ac6b388" = Meme Judge	
   //"ac9aa940f56910279f8ddd7e8a" = Black Bot  *
-  //                          "" = Meme Chat
+  //"f857f36c11d25f33c6c2980505" = Meme Chat
   /*
   console.log("botID: ");
   console.log(botID);
@@ -24,7 +24,7 @@ var botID = process.env.BOT_ID;
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
 const token = 'token=1df9001037c901372aca3263649c7787';
-const groupId = '40490400';// '50769460' = Meme Court, '40490400' = Black Rose, '26930811' = Meme Chat
+const groupId = '26930811';// '50769460' = Meme Court, '40490400' = Black Rose, '26930811' = Meme Chat
 const msgLimit = '100';
   // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
@@ -252,8 +252,8 @@ function postMessage() {
 function postResults(senderID) {
 
   var botResponse, options, body, botReq;
-  const Admins = ['18197056', '39735084', '30109965'];  //array filled with user_id's of members that are allowed to display scoreboard
-               //[ Izu       ,  Uzair   ,  Dan      ,]
+  const Admins = ['18197056', '39735084', '30109965', '46367350', '46537569'];  //array filled with user_id's of members that are allowed to display scoreboard
+               //[ Izu       ,  Uzair   ,  Dan      ,  Ahmad    ,  Mohamed Yusuf]
 
   if(Admins.includes(senderID)) {
     responseString = createOutput()
