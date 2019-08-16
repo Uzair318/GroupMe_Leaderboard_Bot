@@ -256,10 +256,10 @@ function respond() {
     this.res.writeHead(200);
     postMessage();
     this.res.end();
-  } else if (request.text && (request.text == "/postResults")) {
-    this.res.writeHead(200);
-    postResults(senderID);
-    this.res.end();
+  // } else if (request.text && (request.text == "/postResults")) {
+  //   this.res.writeHead(200);
+  //   postResults(senderID);
+  //   this.res.end();
   }
   else {
     console.log("don't care");
