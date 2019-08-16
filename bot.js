@@ -42,6 +42,9 @@ console.log("botID: ");
 console.log(botID);
  */
 
+
+
+
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
 const token = 'token=1df9001037c901372aca3263649c7787';
@@ -50,8 +53,15 @@ const msgLimit = '100';
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
 
+/**/
+createOutput()
+.then(tempOutput => {
+  console.log(tempOutput);
+})
+
+
 function createOutput() {
-  const outputPromise = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     getMessages(url)
       .then(messagesJSON => {
 
@@ -117,7 +127,6 @@ function createOutput() {
         console.log(error);
       })
   })
-  return outputPromise;
 }
 //use above url to get messages for specific groupchat
 
