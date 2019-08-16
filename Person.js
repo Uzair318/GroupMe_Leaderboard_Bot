@@ -1,3 +1,6 @@
+const sprintf = require('sprintf');
+const sprintf = new sprintf();
+
 class Person {
     constructor(givenName, id) {
         this._name = givenName;
@@ -51,7 +54,8 @@ class Person {
     }
 
     toString() {
-        return "" + this._name.padEnd(20) + " Like-Post ratio: " + this.likePostRatio().toFixed(2);    
+        //return "" + /*this._name.padEnd(20)*/this._name.substring(0,12).padEnd(20) + " Like-Post ratio: " + this.likePostRatio().toFixed(2);    
+        return sprintf("%s %27s $s", this._name, "Like-Post ratio: ", this.likePostRatio().toFixed(2));
     }
 
 }; //Person 
