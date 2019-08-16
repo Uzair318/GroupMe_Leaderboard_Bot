@@ -57,6 +57,8 @@ const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit
 createOutput()
 .then(tempOutput => {
   console.log(tempOutput);
+  str = "0123456789";
+  console.log(str.substring(0,4).padEnd(6) + ".");
 })
 
 
