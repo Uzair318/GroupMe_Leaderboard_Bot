@@ -54,9 +54,9 @@ class Person {
 
     toString() {
         //return "" + /*this._name.padEnd(20)*/this._name.substring(0,12).padEnd(20) + " Like-Post ratio: " + this.likePostRatio().toFixed(2);    
-        return sprintf("%s %s %s", this._name.substring(0, 15).padEnd(16), "Like-Post ratio: ", this.likePostRatio().toFixed(2).padStart(5));
+        var ratioString = "Like-Post ratio: " + this.likePostRatio().toFixed(2).padStart(5);
+        return sprintf("%s %s", this._name.substring(0, 15).padEnd(16), ratioString);
     }
-
 }; //Person 
 
 module.exports = Person;

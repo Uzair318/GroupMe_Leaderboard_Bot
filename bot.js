@@ -53,14 +53,14 @@ const msgLimit = '100';
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
 
-/**/
+/*
 createOutput()
 .then(tempOutput => {
   console.log(tempOutput);
-  str = "0123456789";
-  console.log(str.substring(0,4).padEnd(6) + ".");
+  str = "Izu";
+  console.log(str.substring(0, 15).padEnd(16) + ".");
 })
-
+*/
 
 function createOutput() {
   return new Promise((resolve, reject) => {
