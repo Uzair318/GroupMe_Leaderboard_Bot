@@ -1,5 +1,4 @@
 const sprintf = require('sprintf');
-const sprintf = new sprintf();
 
 class Person {
     constructor(givenName, id) {
