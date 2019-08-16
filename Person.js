@@ -54,7 +54,7 @@ class Person {
 
     toString() {
         //return "" + /*this._name.padEnd(20)*/this._name.substring(0,12).padEnd(20) + " Like-Post ratio: " + this.likePostRatio().toFixed(2);    
-        return sprintf("%s %40s %.2f", this._name.substring(0, 12).padEnd(13), "Like-Post ratio: ".padStart(25), this.likePostRatio());
+        return sprintf("%s%40s%.2f", this._name.substring(0, 12).padEnd(13), "Like-Post ratio: ".padStart(25), this.likePostRatio());
     }
 
 }; //Person 
