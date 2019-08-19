@@ -43,8 +43,6 @@ console.log(botID);
  */
 
 
-postHighest();
-
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
 const token = 'token=1df9001037c901372aca3263649c7787';
@@ -219,6 +217,47 @@ function respond() {
 
   var senderID = request.sender_id;
   var needToPostResults = false;
+
+  delayInMilliseconds = 1000;
+
+  setTimeout(function() {
+    //your code to be executed after 1 second
+    var countPlus = mongo.incrementCount();
+    if (countPlus == true || (request.text && (request.text == "/postResults"))) {
+      needToPostResults = true;
+    }
+
+    //if command to post highest post of all time
+    if ((request.text && (request.text == "/postHighest"))) {
+      this.res.writeHead(200);
+      postHighest();
+      this.res.end();
+    }
+
+    if (needToPostResults) {
+      this.res.writeHead(200);
+      postResults(senderID);
+      this.res.end();
+    }  
+    
+    if (request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
+    this.res.writeHead(200);
+    postMessage();
+    this.res.end();
+    // } else if (request.text && (request.text == "/postResults")) {
+    //   this.res.writeHead(200);
+    //   postResults(senderID);
+    //   this.res.end();
+  }
+  else {
+    console.log("don't care");
+    this.res.writeHead(200);
+    this.res.end();
+  }
+  }, delayInMilliseconds);
+
+
+
   /**
    * Thought Process:
    * 
@@ -235,49 +274,7 @@ function respond() {
    * 
    */
 
-  var countPlus = mongo.incrementCount();
-  if (countPlus == true || (request.text && (request.text == "/postResults"))) {
-    needToPostResults = true;
-  }
 
-  //if command to post highest post of all time
-  if ((request.text && (request.text == "/postBest"))) {
-    this.res.writeHead(200);
-    postHighest();
-    this.res.end();
-  }
-
-  if (needToPostResults) {
-    this.res.writeHead(200);
-    postResults(senderID);
-    this.res.end();
-  }
-
-
-
-
-
-
-
-
-
-
-
-  if (request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
-    this.res.writeHead(200);
-    postMessage();
-    this.res.end();
-    // } else if (request.text && (request.text == "/postResults")) {
-    //   this.res.writeHead(200);
-    //   postResults(senderID);
-    //   this.res.end();
-  }
-  else {
-    console.log("don't care");
-    this.res.writeHead(200);
-    this.res.end();
-  }
-  //increment counter
 }
 
 
@@ -417,7 +414,7 @@ function postHighest() {
     bestOwner = values[1];
     postText = values[2];
 
-    botResponse = "Highest Post of All Time: \n"; //Should be in string form
+    botResponse = "Highest Ranking Post of All Time: \n"; //Should be in string form
     botResponse += "\t by: " + bestOwner + "\n";
     if (postText != "") {
       botResponse += "\"" + postText + "\"";
