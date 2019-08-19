@@ -81,9 +81,9 @@ class Mongo {
                 if(error) {
                     reject(error);
                 } else {
-                    console.log("config.personWithMostLikes.owner")
-                    console.log(config.personWithMostLikes.owner)
-                    resolve(config.personWithMostLikes.owner)
+                    //console.log("config.bestPost.owner")
+                    //console.log(config.bestPost.owner)
+                    resolve(config.bestPost.owner)
                 }
             })
         })
@@ -95,7 +95,7 @@ class Mongo {
                 if (error) {
                     reject(error);
                 } else {
-                    resolve(config.numLikes);
+                    resolve(config.bestPost.numLikes);
                 }
 
 
@@ -109,7 +109,7 @@ class Mongo {
                 if (error) {
                     reject(error);
                 } else {
-                    resolve(config.text);
+                    resolve(config.bestPost.text);
                 }
             });
         });
@@ -121,7 +121,7 @@ class Mongo {
                 if (error) {
                     reject(error);
                 } else {
-                    resolve(config.img_url);
+                    resolve(config.bestPost.img_url);
                 }
 
             });

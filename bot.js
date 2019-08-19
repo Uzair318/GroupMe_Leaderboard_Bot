@@ -15,8 +15,8 @@ const dotenv = require('dotenv').config();
  *    (be sure to double check callback URL of each bot on GroupMe site)
  */
 
- // f857f36c11d25f33c6c2980505 = Meme Chat (PRODUCTION)
- // 4bb46a8ba8d21f56cd430d05a4 = Meme Court *
+// f857f36c11d25f33c6c2980505 = Meme Chat (PRODUCTION)
+// 4bb46a8ba8d21f56cd430d05a4 = Meme Court *
 
 
 var mongo = new Mongo();
@@ -43,7 +43,7 @@ console.log(botID);
  */
 
 
-
+postHighest();
 
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
@@ -267,10 +267,10 @@ function respond() {
     this.res.writeHead(200);
     postMessage();
     this.res.end();
-  // } else if (request.text && (request.text == "/postResults")) {
-  //   this.res.writeHead(200);
-  //   postResults(senderID);
-  //   this.res.end();
+    // } else if (request.text && (request.text == "/postResults")) {
+    //   this.res.writeHead(200);
+    //   postResults(senderID);
+    //   this.res.end();
   }
   else {
     console.log("don't care");
@@ -406,52 +406,63 @@ function postResults(senderID) {
 function postHighest() {
   var botResponse, options, body, botReq;
 
-  var imgURL = mongo.getURL();//MIGHT NEED PROMISE HERE
-  var bestOwner = mongo.getName();
+  var imgURL = mongo.getURL();
+  var bestOwner = mongo.getOwner();
   var postText = mongo.getText(); //returns false if no text
 
-  botResponse = "Highest Post of All Time: \n"; //Should be in string form
-  botResponse += "\t by: " + bestOwner + "\n";
-  if(postText) {
-    botResponse += "\"" + postText + "\"";
-  }
+  Promise.all([imgURL, bestOwner, postText]).then(function (values) {
+    //console.log(values);
 
-  options = {
-    hostname: 'api.groupme.com',
-    path: '/v3/bots/post',
-    method: 'POST'
-  };
+    imgURL = values[0];
+    bestOwner = values[1];
+    postText = values[2];
 
-  body = {
-    "bot_id": botID,
-    "text": botResponse,
-    "attachments": [
-      {
-        "type": "image",
-        "url": imgURL
-      }
-    ]
-  };
-
-
-  console.log('sending ' + botResponse + ' to ' + botID);
-
-  botReq = HTTPS.request(options, function (res) {
-    if (res.statusCode == 202) {
-      //neat
-    } else {
-      console.log('rejecting bad status code ' + res.statusCode);
+    botResponse = "Highest Post of All Time: \n"; //Should be in string form
+    botResponse += "\t by: " + bestOwner + "\n";
+    if (postText != "") {
+      botResponse += "\"" + postText + "\"";
     }
-  });
 
-  botReq.on('error', function (err) {
-    console.log('error posting message ' + JSON.stringify(err));
-  });
-  botReq.on('timeout', function (err) {
-    console.log('timeout posting message ' + JSON.stringify(err));
-  });
-  botReq.end(JSON.stringify(body));
 
+
+    // console.log(botResponse + "\n" + "img_URL: " + imgURL);
+
+    options = {
+      hostname: 'api.groupme.com',
+      path: '/v3/bots/post',
+      method: 'POST'
+    };
+
+    body = {
+      "bot_id": botID,
+      "text": botResponse,
+      "attachments": [
+        {
+          "type": "image",
+          "url": imgURL
+        }
+      ]
+    };
+
+
+    console.log('sending ' + botResponse + ' to ' + botID);
+
+    botReq = HTTPS.request(options, function (res) {
+      if (res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
+    });
+
+    botReq.on('error', function (err) {
+      console.log('error posting message ' + JSON.stringify(err));
+    });
+    botReq.on('timeout', function (err) {
+      console.log('timeout posting message ' + JSON.stringify(err));
+    });
+    botReq.end(JSON.stringify(body));
+  });
 }
 
 
