@@ -417,7 +417,7 @@ function postHighest() {
     botResponse = "Highest Ranking Post of All Time: \n"; //Should be in string form
     botResponse += "\t by: " + bestOwner + "\n";
     if (postText != "") {
-      botResponse += "\"" + postText + "\"";
+      botResponse +="\n" + "\t" +  "\"" + postText + "\"";
     }
 
 
