@@ -218,29 +218,31 @@ function respond() {
   var senderID = request.sender_id;
   var needToPostResults = false;
 
-  delayInMilliseconds = 1000;
+  // TO SET DELAY
+  // delayInMilliseconds = 1000;
+  // setTimeout(function () {
+  //     //your code to be executed after 1 second
+  // }, delayInMilliseconds);
 
-  setTimeout(function() {
-    //your code to be executed after 1 second
-    var countPlus = mongo.incrementCount();
-    if (countPlus == true || (request.text && (request.text == "/postResults"))) {
-      needToPostResults = true;
-    }
+  var countPlus = mongo.incrementCount();
+  if (countPlus == true || (request.text && (request.text == "/postResults"))) {
+    needToPostResults = true;
+  }
 
-    //if command to post highest post of all time
-    if ((request.text && (request.text == "/postHighest"))) {
-      this.res.writeHead(200);
-      postHighest();
-      this.res.end();
-    }
+  //if command to post highest post of all time
+  if ((request.text && (request.text == "/postHighest"))) {
+    this.res.writeHead(200);
+    postHighest();
+    this.res.end();
+  }
 
-    if (needToPostResults) {
-      this.res.writeHead(200);
-      postResults(senderID);
-      this.res.end();
-    }  
-    
-    if (request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
+  if (needToPostResults) {
+    this.res.writeHead(200);
+    postResults(senderID);
+    this.res.end();
+  }
+
+  if (request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
     this.res.writeHead(200);
     postMessage();
     this.res.end();
@@ -254,7 +256,9 @@ function respond() {
     this.res.writeHead(200);
     this.res.end();
   }
-  }, delayInMilliseconds);
+
+
+
 
 
 
@@ -417,7 +421,7 @@ function postHighest() {
     botResponse = "Highest Ranking Post of All Time: \n"; //Should be in string form
     botResponse += "\t by: " + bestOwner + "\n";
     if (postText != "") {
-      botResponse +="\n" + "\t" +  "\"" + postText + "\"";
+      botResponse += "\n" + "\t" + "\"" + postText + "\"";
     }
 
 
