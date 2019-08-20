@@ -54,7 +54,7 @@ class Person {
 
     toString() {
         var ratioString = "Like-Post ratio: " + this.likePostRatio().toFixed(2).padStart(5);
-        return sprintf("%s %s", this._name.substring(0, 15)/*.padEnd(16)*/, ratioString.padStart(21, " "));
+        return sprintf("%s %s", this._name.substring(0, 15)/*.padEnd(16)*/, ratioString.padStart(27, " "));
             //doesnt matter if it is spaced correctly, GroupMe app will ruin it
     }
 }; //Person 
