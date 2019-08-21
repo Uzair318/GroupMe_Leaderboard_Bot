@@ -53,7 +53,7 @@ class Mongo {
                             if (err) {
                                 reject(err);
                             } else {
-                                resolve(true);
+                                resolve(100);
                             }
                         });
                     } else {

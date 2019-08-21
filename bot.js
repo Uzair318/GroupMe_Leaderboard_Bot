@@ -225,7 +225,7 @@ function respond() {
   // }, delayInMilliseconds);
 
   var countPlus = mongo.incrementCount();
-  if (countPlus == true || (request.text && (request.text == "/postResults"))) {
+  if (countPlus == 100 || (request.text && (request.text == "/postResults"))) {
     needToPostResults = true;
   }
 
