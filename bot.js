@@ -228,25 +228,15 @@ function respond() {
     .then(function (countPlus) {
       console.log("countPlus: " + countPlus);
       if (countPlus == 100 || (request.text && (request.text == "/postResults"))) {
-        needToPostResults = true;
-        console.log(needToPostResults);
-      }
-      
-
-      //if command to post highest post of all time
-      if ((request.text && (request.text == "/postHighest"))) {
-        this.res.writeHead(200);
-        postHighest();
-        this.res.end();
-      }
-
-      if (needToPostResults) {
+        //needToPostResults = true;
         this.res.writeHead(200);
         postResults(senderID);
         this.res.end();
-      }
-
-      if (request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
+      } else if ((request.text && (request.text == "/postHighest"))) {
+        this.res.writeHead(200);
+        postHighest();
+        this.res.end();
+      } else if (request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
         this.res.writeHead(200);
         postMessage();
         this.res.end();
@@ -254,13 +244,19 @@ function respond() {
         //   this.res.writeHead(200);
         //   postResults(senderID);
         //   this.res.end();
-      }
-      else {
+      } else {
         console.log("don't care");
         this.res.writeHead(200);
         this.res.end();
       }
     });
+      /*
+      if (needToPostResults) {
+        
+      }*/
+
+      
+      
   
 
 
