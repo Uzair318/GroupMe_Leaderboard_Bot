@@ -229,7 +229,9 @@ function respond() {
       console.log("countPlus: " + countPlus);
       if (countPlus == 100 || (request.text && (request.text == "/postResults"))) {
         needToPostResults = true;
+        console.log(needToPostResults);
       }
+      
 
       //if command to post highest post of all time
       if ((request.text && (request.text == "/postHighest"))) {
