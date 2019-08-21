@@ -226,6 +226,7 @@ function respond() {
 
   mongo.incrementCount()
     .then(function (countPlus) {
+      console.log("countPlus: " + countPlus);
       if (countPlus == 100 || (request.text && (request.text == "/postResults"))) {
         needToPostResults = true;
       }
