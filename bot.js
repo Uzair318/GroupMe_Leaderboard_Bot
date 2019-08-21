@@ -224,38 +224,41 @@ function respond() {
   //     //your code to be executed after 1 second
   // }, delayInMilliseconds);
 
-  var countPlus = mongo.incrementCount();
-  if (countPlus == 100 || (request.text && (request.text == "/postResults"))) {
-    needToPostResults = true;
-  }
+  mongo.incrementCount()
+    .then(function (countPlus) {
+      if (countPlus == 100 || (request.text && (request.text == "/postResults"))) {
+        needToPostResults = true;
+      }
 
-  //if command to post highest post of all time
-  if ((request.text && (request.text == "/postHighest"))) {
-    this.res.writeHead(200);
-    postHighest();
-    this.res.end();
-  }
+      //if command to post highest post of all time
+      if ((request.text && (request.text == "/postHighest"))) {
+        this.res.writeHead(200);
+        postHighest();
+        this.res.end();
+      }
 
-  if (needToPostResults) {
-    this.res.writeHead(200);
-    postResults(senderID);
-    this.res.end();
-  }
+      if (needToPostResults) {
+        this.res.writeHead(200);
+        postResults(senderID);
+        this.res.end();
+      }
 
-  if (request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
-    this.res.writeHead(200);
-    postMessage();
-    this.res.end();
-    // } else if (request.text && (request.text == "/postResults")) {
-    //   this.res.writeHead(200);
-    //   postResults(senderID);
-    //   this.res.end();
-  }
-  else {
-    console.log("don't care");
-    this.res.writeHead(200);
-    this.res.end();
-  }
+      if (request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
+        this.res.writeHead(200);
+        postMessage();
+        this.res.end();
+        // } else if (request.text && (request.text == "/postResults")) {
+        //   this.res.writeHead(200);
+        //   postResults(senderID);
+        //   this.res.end();
+      }
+      else {
+        console.log("don't care");
+        this.res.writeHead(200);
+        this.res.end();
+      }
+    });
+  
 
 
 
