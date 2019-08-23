@@ -64,7 +64,6 @@ function createOutput() {
   return new Promise((resolve, reject) => {
     getMessages(url)
       .then(messagesJSON => {
-        console.log(messagesJSON)
         /*output for debugging
         console.log("Number of messages recieved: " + messagesJSON.length);
         console.log(JSON.stringify(messagesJSON, '', 2));
