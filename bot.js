@@ -64,7 +64,7 @@ function createOutput() {
   return new Promise((resolve, reject) => {
     getMessages(url)
       .then(messagesJSON => {
-
+        console.log(messagesJSON)
         /*output for debugging
         console.log("Number of messages recieved: " + messagesJSON.length);
         console.log(JSON.stringify(messagesJSON, '', 2));
@@ -216,19 +216,11 @@ function respond() {
     botRegex = /^verdict\?$/i;  // i flag -> case insensitive string
 
   var senderID = request.sender_id;
-  var needToPostResults = false;
-
-  // TO SET DELAY
-  // delayInMilliseconds = 1000;
-  // setTimeout(function () {
-  //     //your code to be executed after 1 second
-  // }, delayInMilliseconds);
 
   mongo.incrementCount()
-    .then(function (countPlus) {
+    .then((countPlus) => {
       console.log("countPlus: " + countPlus);
       if (countPlus == 100 || (request.text && (request.text == "/postResults"))) {
-        //needToPostResults = true;
         this.res.writeHead(200);
         postResults(senderID);
         this.res.end();
@@ -250,14 +242,6 @@ function respond() {
         this.res.end();
       }
     });
-      /*
-      if (needToPostResults) {
-        
-      }*/
-
-      
-      
-  
 
 
 
