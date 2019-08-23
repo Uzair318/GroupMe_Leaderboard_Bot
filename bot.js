@@ -216,11 +216,11 @@ function respond() {
 
   var senderID = request.sender_id;
 
-  console.log("request: ")
-  console.log(request)
+  // console.log("request: ")
+  // console.log(request)
 
-  // console.log("this: ")
-  // console.log(this)
+  console.log(this)
+  console.log("^ this.res")
 
 
 
