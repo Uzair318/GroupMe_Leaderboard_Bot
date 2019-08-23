@@ -216,6 +216,14 @@ function respond() {
 
   var senderID = request.sender_id;
 
+  console.log("request: ")
+  console.log(request)
+
+  console.log("this: ")
+  console.log(this)
+
+
+
   mongo.incrementCount()
     .then((countPlus) => {
       console.log("countPlus: " + countPlus);
@@ -241,26 +249,6 @@ function respond() {
         this.res.end();
       }
     });
-
-
-
-  /**
-   * Thought Process:
-   * 
-   * message recieved {
-   *    increment counter
-   *    if command {
-   *       execute command
-   *    }
-   *    if hit 100 {
-   *        /postResults
-   *    } else {
-   *    }
-   * }
-   * 
-   */
-
-
 }
 
 
@@ -308,7 +296,7 @@ function postResults(senderID) {
 
   var botResponse, options, body, botReq;
   const Admins = ['18197056', '39735084', '30109965', '46367350', '46537569'];  //array filled with user_id's of members that are allowed to display scoreboard
-  //[ Izu       ,  Uzair   ,  Dan      ,  Ahmad    ,  Mohamed Yusuf]
+  //             [ Izu       ,  Uzair   ,  Dan      ,  Ahmad    ,  Mohamed Yusuf]
 
   if (Admins.includes(senderID)) {
     responseString = createOutput()
