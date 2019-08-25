@@ -7,6 +7,8 @@ const dotenv = require('dotenv').config();
 
 //CURRENT STATE: Meme Court (TESTING)
 
+postHighest();
+
 /*
  *  TO CHANGE BOT TO NEW GROUPCHAT
  *    1. Switch groupId
@@ -20,27 +22,10 @@ const dotenv = require('dotenv').config();
 
 
 var mongo = new Mongo();
-// mongo.getCount()
-//   .then(count => {
-//     console.log('count');
-//     console.log(count);
 
-//   })
-// mongo.incrementCount()
-//   .then(count => {
-//     console.log('count');
-//     console.log(count);
-//   })
-// mongo.getName();
 var botID = process.env.BOT_ID;
-// console.log("botID")
-// console.log(botID)
 
 //"f857f36c11d25f33c6c2980505" = Meme Chat
-/*
-console.log("botID: ");
-console.log(botID);
- */
 
 
 // https://dev.groupme.com/docs/v3 ~ API documentation
@@ -51,14 +36,6 @@ const msgLimit = '100';
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
 
-/*
-createOutput()
-.then(tempOutput => {
-  console.log(tempOutput);
-  str = "Izu";
-  console.log(str.substring(0, 15).padEnd(16) + ".");
-})
-*/
 
 function createOutput() {
   return new Promise((resolve, reject) => {
@@ -162,48 +139,60 @@ function getMessages(URL) {
 function getMemberStats(posts, members) {
   return new Promise((resolve, reject) => {
     //go through JSON and instantiate/increment Person objects
-    memberUsage = 0;
-    for (i = 0; i < Object.keys(posts).length; i++) {
 
-      currentID = posts[i].user_id; //using ID to define owner of current post
-      var currentPersonIndex;
-      //sender must be a user and post must be a picture
-      if (posts[i].sender_type == 'user' && posts[i].attachments.length > 0) {
+    //number of likes on the highest post
+    mongo.getNumLikes()
+      .then(currentHighestLikes => {
+        memberUsage = 0;
+        for (i = 0; i < Object.keys(posts).length; i++) {
 
-        //find if person is already instantiated
-        personExists = false;
-        for (y = 0; y < memberUsage; y++) {
-          if (members[y].ID == currentID) {
-            personExists = true;
-            currentPersonIndex = y;
-            break;
+          currentID = posts[i].user_id; //using ID to define owner of current post
+          var currentPersonIndex;
+          //sender must be a user and post must be a picture
+          if (posts[i].sender_type == 'user' && posts[i].attachments.length > 0) {
+
+            //if has higher number of likes than currentHighest
+            if (posts[i].favorited_by.length > currentHighestLikes) {
+              Mongo.updateHighest(posts[i]); //add parameters
+            }
+
+            //find if person is already instantiated
+            personExists = false;
+            for (y = 0; y < memberUsage; y++) {
+              if (members[y].ID == currentID) {
+                personExists = true;
+                currentPersonIndex = y;
+                break;
+              } //if
+            } //for
+
+            if (personExists) { //if person exists
+
+              //increment the person
+              members[currentPersonIndex].plusPost(1);
+              members[currentPersonIndex].plusLikes(posts[i].favorited_by.length);
+
+
+            } else {//if not instantiated
+
+              members[memberUsage] = new Person(posts[i].name, currentID);
+
+              //increment the Person
+              members[memberUsage].plusPost(1);
+              members[memberUsage].plusLikes(posts[i].favorited_by.length);
+
+              memberUsage++;
+
+
+
+            } //if-else
           } //if
         } //for
-
-        if (personExists) { //if person exists
-
-          //increment the person
-          members[currentPersonIndex].plusPost(1);
-          members[currentPersonIndex].plusLikes(posts[i].favorited_by.length);
+        resolve(members);
+      })
+  });
 
 
-        } else {//if not instantiated
-
-          members[memberUsage] = new Person(posts[i].name, currentID);
-
-          //increment the Person
-          members[memberUsage].plusPost(1);
-          members[memberUsage].plusLikes(posts[i].favorited_by.length);
-
-          memberUsage++;
-
-
-
-        } //if-else
-      } //if
-    } //for
-    resolve(members);
-  })
 }
 
 
@@ -215,14 +204,6 @@ function respond() {
     botRegex = /^verdict\?$/i;  // i flag -> case insensitive string
 
   var senderID = request.sender_id;
-
-  // console.log("request: ")
-  // console.log(request)
-
-  console.log(this)
-  console.log("^ this.res")
-
-
 
   mongo.incrementCount()
     .then((countPlus) => {
@@ -239,10 +220,6 @@ function respond() {
         this.res.writeHead(200);
         postMessage();
         this.res.end();
-        // } else if (request.text && (request.text == "/postResults")) {
-        //   this.res.writeHead(200);
-        //   postResults(senderID);
-        //   this.res.end();
       } else {
         console.log("don't care");
         this.res.writeHead(200);
@@ -376,64 +353,70 @@ function postResults(senderID) {
 
 function postHighest() {
   var botResponse, options, body, botReq;
+  mongo = new Mongo();
+  /*
+    var imgURL = mongo.getURL();
+    var bestOwner = mongo.getOwner();
+    var postText = mongo.getText(); //returns false if no text
+  */
+  //Promise.all([imgURL, bestOwner, postText]).then(function (values) {
+  //console.log(values);
+  /*
+  imgURL = values[0];
+  bestOwner = values[1];
+  postText = values[2];
+  
+  botResponse = "Highest Ranking Post of All Time: \n"; //Should be in string form
+  botResponse += "\t by: " + bestOwner + "\n";
+  if (postText != "") {
+    botResponse += "\n" + "\t" + "\"" + postText + "\"";
+  } */
+  mongo.highestToString()
+    .then(botResponse, imgURL => {
+      // console.log(botResponse + "\n" + "img_URL: " + imgURL);
 
-  var imgURL = mongo.getURL();
-  var bestOwner = mongo.getOwner();
-  var postText = mongo.getText(); //returns false if no text
+      options = {
+        hostname: 'api.groupme.com',
+        path: '/v3/bots/post',
+        method: 'POST'
+      };
 
-  Promise.all([imgURL, bestOwner, postText]).then(function (values) {
-    //console.log(values);
-
-    imgURL = values[0];
-    bestOwner = values[1];
-    postText = values[2];
-
-    botResponse = "Highest Ranking Post of All Time: \n"; //Should be in string form
-    botResponse += "\t by: " + bestOwner + "\n";
-    if (postText != "") {
-      botResponse += "\n" + "\t" + "\"" + postText + "\"";
-    }
+      body = {
+        "bot_id": botID,
+        "text": botResponse,
+        "attachments": [
+          {
+            "type": "image",
+            "url": imgURL
+          }
+        ]
+      };
 
 
+      console.log('sending ' + botResponse + ' to ' + botID);
 
-    // console.log(botResponse + "\n" + "img_URL: " + imgURL);
-
-    options = {
-      hostname: 'api.groupme.com',
-      path: '/v3/bots/post',
-      method: 'POST'
-    };
-
-    body = {
-      "bot_id": botID,
-      "text": botResponse,
-      "attachments": [
-        {
-          "type": "image",
-          "url": imgURL
+      botReq = HTTPS.request(options, function (res) {
+        if (res.statusCode == 202) {
+          //neat
+        } else {
+          console.log('rejecting bad status code ' + res.statusCode);
         }
-      ]
-    };
+      });
+
+      botReq.on('error', function (err) {
+        console.log('error posting message ' + JSON.stringify(err));
+      });
+      botReq.on('timeout', function (err) {
+        console.log('timeout posting message ' + JSON.stringify(err));
+      });
+      botReq.end(JSON.stringify(body));
+      //});
 
 
-    console.log('sending ' + botResponse + ' to ' + botID);
-
-    botReq = HTTPS.request(options, function (res) {
-      if (res.statusCode == 202) {
-        //neat
-      } else {
-        console.log('rejecting bad status code ' + res.statusCode);
-      }
     });
 
-    botReq.on('error', function (err) {
-      console.log('error posting message ' + JSON.stringify(err));
-    });
-    botReq.on('timeout', function (err) {
-      console.log('timeout posting message ' + JSON.stringify(err));
-    });
-    botReq.end(JSON.stringify(body));
-  });
+
+
 }
 
 

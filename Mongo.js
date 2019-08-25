@@ -5,8 +5,8 @@ const schema = new mongoose.Schema({
     "bestPost": { //owner of the post that has recieved the most likes
         "owner": String,
         "numLikes": Number,
-        "text" : String,
-        "img_url" : String
+        "text": String,
+        "img_url": String
     }
 });
 const Configs = mongoose.model('Configs', schema);
@@ -18,8 +18,8 @@ class Mongo {
     }
 
     //Need an updateBestPost() function
-        //need criteria set for evaluating if a post is eligible 
-    
+    //need criteria set for evaluating if a post is eligible 
+
     getCount() {
         return new Promise((resolve, reject) => {
             Configs.findOne({}, (error, config) => {
@@ -30,6 +30,39 @@ class Mongo {
                 }
             });
         });
+    }
+
+    /**
+     * posts the new highest ranking post to mongoDB
+     *  @param newHighestPost is the message passed in from getMemberStats to be pushed to mongoDB
+     */
+    updateHighest(newHighestPost) {
+        return new Promise((resolve, reject) => {
+            Configs.findOne({}, (err, oldHighestPost) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    if (!oldHighestPost) {
+                        console.log("no object found");
+                        return -1;
+                    }
+
+                    //update the bestPost object
+                    oldHighestPost.bestPost.owner = newHighestPost.name;
+                    oldHighestPost.bestPost.numLikes = newHighestPost.favorited_by.length;
+                    oldHighestPost.bestPost.text = newHighestPost.text;
+                    oldHighestPost.bestPost.img_url = newHighestPost.attachments[0].url;
+                    oldHighestPost.save((err, updatedHighestPost) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(updatedHighestPost);
+                        }
+                    });
+
+                }
+            })
+        })
     }
 
     /**
@@ -47,7 +80,7 @@ class Mongo {
                         console.log("no object found");
                         return -1;
                     }
-                    if(foundObject.count == 99) {
+                    if (foundObject.count == 99) {
                         foundObject.count = 0;
                         foundObject.save((err, updatedObject) => {
                             if (err) {
@@ -59,26 +92,26 @@ class Mongo {
                     } else {
                         foundObject.count++;
                         foundObject.save((err, updatedObject) => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve(updatedObject.count);
-                        }
-                    });
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve(updatedObject.count);
+                            }
+                        });
                     }
-                    
 
-                    
+
+
 
                 }
             });
         });
     }
-    
+
     getOwner() {
         return new Promise((resolve, reject) => {
             Configs.findOne({}, (error, config) => {
-                if(error) {
+                if (error) {
                     reject(error);
                 } else {
                     //console.log("config.bestPost.owner")
@@ -128,6 +161,21 @@ class Mongo {
         });
     }
 
+    highestToString() {
+        return new Promise((resolve, reject) => {
+            var result = "Highest Post of All Time: \n";
+            Configs.findOne({}, (error, config) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    result += "\t by " + config.bestPost.owner + "with " + config.bestPost.numLikes + " likes \n"
+                    result += "\"" + config.bestPost.text + "\"";
+                    resolve(result, config.bestPost.img_url); //dont forget to post an attachment, type image, with imgURL
+                }
+
+            });
+        });
+    }
 
 }
 
