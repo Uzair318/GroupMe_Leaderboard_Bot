@@ -209,7 +209,7 @@ function respond() {
     .then((countPlus) => {
       //countPlus = 100; //FOR TESTING PURPOSES, REMOVE BEFORE DEPLOYING
       console.log("Number of messages since last post: " + countPlus);
-      if (countPlus == 100 || (request.text && (request.text == "/postResults"))) {
+      if (countPlus == 80 || (request.text && (request.text == "/postResults"))) {
         this.res.writeHead(200);
         postResults(senderID);
         this.res.end();

@@ -80,13 +80,13 @@ class Mongo {
                         console.log("no object found");
                         return -1;
                     }
-                    if (foundObject.count == 99) {
+                    if (foundObject.count == 79) {
                         foundObject.count = 0;
                         foundObject.save((err, updatedObject) => {
                             if (err) {
                                 reject(err);
                             } else {
-                                resolve(100);
+                                resolve(80);
                             }
                         });
                     } else {
