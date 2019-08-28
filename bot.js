@@ -371,7 +371,8 @@ function postHighest() {
   } */
   mongo.highestToString()
     .then(botResponse, imgURL => {
-
+      console.log("botResponse: " + botResponse);
+      console.log("imgURL: " + imgURL);
       options = {
         hostname: 'api.groupme.com',
         path: '/v3/bots/post',
