@@ -7,7 +7,6 @@ const dotenv = require('dotenv').config();
 
 //CURRENT STATE: Meme Court (TESTING)
 
-postHighest();
 
 /*
  *  TO CHANGE BOT TO NEW GROUPCHAT
@@ -35,6 +34,13 @@ const groupId = '50769460';// '26930811' = Meme Chat, '50769460' = Meme Court
 const msgLimit = '100';
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
+
+
+mongo.highestToString()
+.then(strings => {
+  console.log(strings);
+})
+
 
 
 function createOutput() {
@@ -351,7 +357,7 @@ function postResults(senderID) {
 
 function postHighest() {
   var botResponse, options, body, botReq;
-  mongo = new Mongo();
+  //mongo = new Mongo();
   /*
     var imgURL = mongo.getURL();
     var bestOwner = mongo.getOwner();
@@ -370,9 +376,9 @@ function postHighest() {
     botResponse += "\n" + "\t" + "\"" + postText + "\"";
   } */
   mongo.highestToString()
-    .then(botResponse, imgURL => {
+    .then(botResponse/*, imgURL*/ => {
       console.log("botResponse: " + botResponse);
-      console.log("imgURL: " + imgURL);
+      //console.log("imgURL: " + imgURL);
       options = {
         hostname: 'api.groupme.com',
         path: '/v3/bots/post',
@@ -385,7 +391,7 @@ function postHighest() {
         "attachments": [
           {
             "type": "image",
-            "url": imgURL
+            "url": "placeholder"//imgURL
           }
         ]
       };

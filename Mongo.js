@@ -168,7 +168,9 @@ class Mongo {
                 } else {
                     result += "\t by " + config.bestPost.owner + "with " + config.bestPost.numLikes + " likes \n"
                     result += "\"" + config.bestPost.text + "\"";
-                    resolve(result, config.bestPost.img_url); //dont forget to post an attachment, type image, with imgURL
+                    //Res = [];
+                    //Res = [result, config.bestPost.img_url];
+                    resolve(result); //dont forget to post an attachment, type image, with imgURL
                 }
 
             });
