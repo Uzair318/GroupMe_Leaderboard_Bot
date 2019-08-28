@@ -207,7 +207,7 @@ function respond() {
 
   mongo.incrementCount()
     .then((countPlus) => {
-      countPluss = 100; //FOR TESTING PURPOSES, REMOVE BEFORE DEPLOYING
+      countPlus = 100; //FOR TESTING PURPOSES, REMOVE BEFORE DEPLOYING
       console.log("Number of messages since last post: " + countPlus);
       if (countPlus == 100 || (request.text && (request.text == "/postResults"))) {
         this.res.writeHead(200);
