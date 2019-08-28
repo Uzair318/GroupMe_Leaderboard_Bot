@@ -114,8 +114,6 @@ class Mongo {
                 if (error) {
                     reject(error);
                 } else {
-                    //console.log("config.bestPost.owner")
-                    //console.log(config.bestPost.owner)
                     resolve(config.bestPost.owner)
                 }
             })

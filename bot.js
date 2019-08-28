@@ -207,7 +207,8 @@ function respond() {
 
   mongo.incrementCount()
     .then((countPlus) => {
-      console.log("countPlus: " + countPlus);
+      countPluss = 100; //FOR TESTING PURPOSES, REMOVE BEFORE DEPLOYING
+      console.log("Number of messages since last post: " + countPlus);
       if (countPlus == 100 || (request.text && (request.text == "/postResults"))) {
         this.res.writeHead(200);
         postResults(senderID);
@@ -278,11 +279,8 @@ function postResults(senderID) {
   if (Admins.includes(senderID)) {
     responseString = createOutput()
       .then(responseString => {
-        botResponse = responseString;// + "\n senderID: " + senderID; //Should be in string form
+        botResponse = responseString; //Should be in string form
 
-        /*
-        console.log(responseString);
-        */
         options = {
           hostname: 'api.groupme.com',
           path: '/v3/bots/post',
@@ -373,7 +371,6 @@ function postHighest() {
   } */
   mongo.highestToString()
     .then(botResponse, imgURL => {
-      // console.log(botResponse + "\n" + "img_URL: " + imgURL);
 
       options = {
         hostname: 'api.groupme.com',
@@ -410,12 +407,9 @@ function postHighest() {
         console.log('timeout posting message ' + JSON.stringify(err));
       });
       botReq.end(JSON.stringify(body));
-      //});
 
 
     });
-
-
 
 }
 
