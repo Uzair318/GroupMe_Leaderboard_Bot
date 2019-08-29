@@ -160,7 +160,7 @@ function getMemberStats(posts, members) {
 
             //if has higher number of likes than currentHighest
             if (posts[i].favorited_by.length > currentHighestLikes) {
-              Mongo.updateHighest(posts[i]); //add parameters
+              mongo.updateHighest(posts[i]); //add parameters
             }
 
             //find if person is already instantiated
