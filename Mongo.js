@@ -34,7 +34,7 @@ class Mongo {
 
     /**
      * posts the new highest ranking post to mongoDB
-     *  @param newHighestPost is the message passed in from getMemberStats to be pushed to mongoDB
+     *  @param newHighestPost is the message (JSON) passed in from getMemberStats to be pushed to mongoDB
      */
     updateHighest(newHighestPost) {
         return new Promise((resolve, reject) => {

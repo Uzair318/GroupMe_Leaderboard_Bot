@@ -35,12 +35,13 @@ const msgLimit = '100';
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
 
-
+/*
+  TEST CODE
 mongo.highestToString()
 .then(strings => {
   console.log(strings);
 })
-
+*/
 
 
 function createOutput() {
@@ -357,24 +358,7 @@ function postResults(senderID) {
 
 function postHighest() {
   var botResponse, options, body, botReq;
-  //mongo = new Mongo();
-  /*
-    var imgURL = mongo.getURL();
-    var bestOwner = mongo.getOwner();
-    var postText = mongo.getText(); //returns false if no text
-  */
-  //Promise.all([imgURL, bestOwner, postText]).then(function (values) {
-  //console.log(values);
-  /*
-  imgURL = values[0];
-  bestOwner = values[1];
-  postText = values[2];
-  
-  botResponse = "Highest Ranking Post of All Time: \n"; //Should be in string form
-  botResponse += "\t by: " + bestOwner + "\n";
-  if (postText != "") {
-    botResponse += "\n" + "\t" + "\"" + postText + "\"";
-  } */
+
   mongo.highestToString()
     .then(givenObj => {
 
