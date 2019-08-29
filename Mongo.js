@@ -166,11 +166,13 @@ class Mongo {
                 if (error) {
                     reject(error);
                 } else {
-                    result += "\t by " + config.bestPost.owner + "with " + config.bestPost.numLikes + " likes \n"
-                    result += "\"" + config.bestPost.text + "\"";
-                    //Res = [];
-                    //Res = [result, config.bestPost.img_url];
-                    resolve(result); //dont forget to post an attachment, type image, with imgURL
+                    result += "\t by " + config.bestPost.owner + " with " + config.bestPost.numLikes + " likes \n"
+                    result += "\t + \"" + config.bestPost.text + "\"";
+                    let resultObj = {
+                        highestString : result,
+                        imgURL : config.bestPost.img_url
+                    }
+                    resolve(resultObj); //dont forget to post an attachment, type image, with imgURL
                 }
 
             });

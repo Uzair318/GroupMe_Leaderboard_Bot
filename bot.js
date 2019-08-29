@@ -376,9 +376,12 @@ function postHighest() {
     botResponse += "\n" + "\t" + "\"" + postText + "\"";
   } */
   mongo.highestToString()
-    .then(botResponse/*, imgURL*/ => {
-      console.log("botResponse: " + botResponse);
-      //console.log("imgURL: " + imgURL);
+    .then(givenObj => {
+
+      botResponse = givenObj.highestString;
+
+      console.log("botResponse: " + givenObj.highestString);
+      console.log("imgURL: " + givenObj.imgURL);
       options = {
         hostname: 'api.groupme.com',
         path: '/v3/bots/post',
@@ -391,7 +394,7 @@ function postHighest() {
         "attachments": [
           {
             "type": "image",
-            "url": "placeholder"//imgURL
+            "url": givenObj.imgURL
           }
         ]
       };
