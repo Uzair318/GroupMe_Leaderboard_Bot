@@ -35,13 +35,6 @@ const msgLimit = '100';
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
 
-/*
-  TEST CODE
-mongo.highestToString()
-.then(strings => {
-  console.log(strings);
-})
-*/
 
 
 function createOutput() {
@@ -287,38 +280,50 @@ function postResults(senderID) {
     responseString = createOutput()
       .then(responseString => {
         botResponse = responseString; //Should be in string form
+        highestSnippet = mongo.highestToString()
+          .then(highestSnippet, botResponse => {
+            
+            botResponse += "\n" + highestSnippet;
 
-        options = {
-          hostname: 'api.groupme.com',
-          path: '/v3/bots/post',
-          method: 'POST'
-        };
+            options = {
+              hostname: 'api.groupme.com',
+              path: '/v3/bots/post',
+              method: 'POST'
+            };
 
-        body = {
-          "bot_id": botID,
-          "text": botResponse
-        };
+            body = {
+              "bot_id": botID,
+              "text": botResponse,
+              "attachments": [
+                {
+                  "type": "image",
+                  "url": givenObj.imgURL
+                }
+              ]
+            };
 
 
-        console.log('sending ' + botResponse + ' to ' + botID);
+            console.log('sending ' + botResponse + ' to ' + botID);
 
-        botReq = HTTPS.request(options, function (res) {
-          if (res.statusCode == 202) {
-            //neat
-          } else {
-            console.log('rejecting bad status code ' + res.statusCode);
+            botReq = HTTPS.request(options, function (res) {
+              if (res.statusCode == 202) {
+                //neat
+              } else {
+                console.log('rejecting bad status code ' + res.statusCode);
+              }
+            });
+
+            botReq.on('error', function (err) {
+              console.log('error posting message ' + JSON.stringify(err));
+            });
+            botReq.on('timeout', function (err) {
+              console.log('timeout posting message ' + JSON.stringify(err));
+            });
+            botReq.end(JSON.stringify(body));
           }
-        });
+          )
+      });
 
-        botReq.on('error', function (err) {
-          console.log('error posting message ' + JSON.stringify(err));
-        });
-        botReq.on('timeout', function (err) {
-          console.log('timeout posting message ' + JSON.stringify(err));
-        });
-        botReq.end(JSON.stringify(body));
-      }
-      )
   }
   else { //not allowed
     botResponse = "Sorry, you do not have permission to do this.";//; + "\n senderID: " + senderID; //Should be in string form
@@ -359,52 +364,88 @@ function postResults(senderID) {
 function postHighest() {
   var botResponse, options, body, botReq;
 
-  mongo.highestToString()
-    .then(givenObj => {
+  const Admins = ['18197056', '39735084', '30109965', '46367350', '46537569'];  //array filled with user_id's of members that are allowed to display scoreboard
+  //             [ Izu       ,  Uzair   ,  Dan      ,  Ahmad    ,  Mohamed Yusuf]
 
-      botResponse = givenObj.highestString;
+  if (Admins.includes(senderID)) {
+    mongo.highestToString()
+      .then(givenObj => {
 
-      console.log("botResponse: " + givenObj.highestString);
-      console.log("imgURL: " + givenObj.imgURL);
-      options = {
-        hostname: 'api.groupme.com',
-        path: '/v3/bots/post',
-        method: 'POST'
-      };
+        botResponse = givenObj.highestString;
 
-      body = {
-        "bot_id": botID,
-        "text": botResponse,
-        "attachments": [
-          {
-            "type": "image",
-            "url": givenObj.imgURL
+        console.log("botResponse: " + givenObj.highestString);
+        console.log("imgURL: " + givenObj.imgURL);
+        options = {
+          hostname: 'api.groupme.com',
+          path: '/v3/bots/post',
+          method: 'POST'
+        };
+
+        body = {
+          "bot_id": botID,
+          "text": botResponse,
+          "attachments": [
+            {
+              "type": "image",
+              "url": givenObj.imgURL
+            }
+          ]
+        };
+
+
+        console.log('sending ' + botResponse + ' to ' + botID);
+
+        botReq = HTTPS.request(options, function (res) {
+          if (res.statusCode == 202) {
+            //neat
+          } else {
+            console.log('rejecting bad status code ' + res.statusCode);
           }
-        ]
-      };
+        });
+
+        botReq.on('error', function (err) {
+          console.log('error posting message ' + JSON.stringify(err));
+        });
+        botReq.on('timeout', function (err) {
+          console.log('timeout posting message ' + JSON.stringify(err));
+        });
+        botReq.end(JSON.stringify(body));
 
 
-      console.log('sending ' + botResponse + ' to ' + botID);
-
-      botReq = HTTPS.request(options, function (res) {
-        if (res.statusCode == 202) {
-          //neat
-        } else {
-          console.log('rejecting bad status code ' + res.statusCode);
-        }
       });
+  } else { //not allowed
+    botResponse = "Sorry, you do not have permission to do this.";//; + "\n senderID: " + senderID; //Should be in string form
 
-      botReq.on('error', function (err) {
-        console.log('error posting message ' + JSON.stringify(err));
-      });
-      botReq.on('timeout', function (err) {
-        console.log('timeout posting message ' + JSON.stringify(err));
-      });
-      botReq.end(JSON.stringify(body));
+    options = {
+      hostname: 'api.groupme.com',
+      path: '/v3/bots/post',
+      method: 'POST'
+    };
+
+    body = {
+      "bot_id": botID,
+      "text": botResponse
+    };
 
 
+    console.log('sending ' + botResponse + ' to ' + botID);
+
+    botReq = HTTPS.request(options, function (res) {
+      if (res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
     });
 
+    botReq.on('error', function (err) {
+      console.log('error posting message ' + JSON.stringify(err));
+    });
+    botReq.on('timeout', function (err) {
+      console.log('timeout posting message ' + JSON.stringify(err));
+    });
+    botReq.end(JSON.stringify(body));
+  }
 }
 
 
