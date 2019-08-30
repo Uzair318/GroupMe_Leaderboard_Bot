@@ -280,10 +280,10 @@ function postResults(senderID) {
     responseString = createOutput()
       .then(responseString => {
         botResponse = responseString; //Should be in string form
-        highestSnippet = mongo.highestToString()
-          .then(highestSnippet, botResponse => {
-            
-            botResponse += "\n" + highestSnippet;
+        highestString = mongo.highestToString()
+          .then(highestString, botResponse => {
+
+            botResponse += "\n" + highestString.result;
 
             options = {
               hostname: 'api.groupme.com',
@@ -297,7 +297,7 @@ function postResults(senderID) {
               "attachments": [
                 {
                   "type": "image",
-                  "url": givenObj.imgURL
+                  "url": highestString.imgURL
                 }
               ]
             };
