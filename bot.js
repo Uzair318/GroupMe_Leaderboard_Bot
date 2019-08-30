@@ -215,7 +215,7 @@ function respond() {
         this.res.end();
       } else if ((request.text && (request.text == "/postHighest"))) {
         this.res.writeHead(200);
-        postHighest();
+        postHighest(senderID);
         this.res.end();
       } else if (request.text && botRegex.test(request.text)) { //text coming in, Regex (regular expressions)
         this.res.writeHead(200);
@@ -278,10 +278,11 @@ function postResults(senderID) {
 
   if (Admins.includes(senderID)) {
     responseString = createOutput()
-      .then(responseString => {
-        botResponse = responseString; //Should be in string form
-        highestString = mongo.highestToString()
-          .then(highestString, botResponse => {
+    highestObj = mongo.highestToString()
+
+    Promise.all([responseString, highestObj]).then((resultArray) => {
+        botResponse = resultArray[0]; //Should be in string form
+        botResponse += "\n" + resultArray[1].result;
 
             botResponse += "\n" + highestString.result;
 
@@ -297,7 +298,7 @@ function postResults(senderID) {
               "attachments": [
                 {
                   "type": "image",
-                  "url": highestString.imgURL
+                  "url": resultArray[1].imgURL
                 }
               ]
             };
@@ -322,7 +323,6 @@ function postResults(senderID) {
             botReq.end(JSON.stringify(body));
           }
           )
-      });
 
   }
   else { //not allowed
@@ -361,7 +361,7 @@ function postResults(senderID) {
 }
 
 
-function postHighest() {
+function postHighest(senderID) {
   var botResponse, options, body, botReq;
 
   const Admins = ['18197056', '39735084', '30109965', '46367350', '46537569'];  //array filled with user_id's of members that are allowed to display scoreboard
