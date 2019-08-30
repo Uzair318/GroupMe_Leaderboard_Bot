@@ -281,6 +281,7 @@ function postResults(senderID) {
     highestObj = mongo.highestToString()
 
     Promise.all([responseString, highestObj]).then((resultArray) => {
+      console.log(resultsArray[1])
       botResponse = resultArray[0]; //Should be in string form
       botResponse += "\n" + resultArray[1].result;
 
