@@ -36,7 +36,7 @@ const msgLimit = '100';
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
 
 
-
+//Creates output String for leaderboard
 function createOutput() {
   return new Promise((resolve, reject) => {
     getMessages(url)
@@ -230,7 +230,8 @@ function respond() {
 }
 
 
-
+//Easter Egg
+//Posts "Guilty!" if someone asks "Verdict?"
 function postMessage() {
   var botResponse, options, body, botReq;
 
@@ -269,7 +270,8 @@ function postMessage() {
 
 
 
-
+//Posts Leaderboard
+//   also has highest post of all time appended to bottom
 function postResults(senderID) {
 
   var botResponse, options, body, botReq;
@@ -359,7 +361,7 @@ function postResults(senderID) {
   }
 }
 
-
+//Posts highest post of all time
 function postHighest(senderID) {
   var botResponse, options, body, botReq;
 
