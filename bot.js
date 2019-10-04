@@ -326,26 +326,26 @@ function updateDBScores() {
                 //push Persons onto DBScoreArray
                 for (let i = 0; i < Members.length; i++) {
                   let currentPerson = Members[i];
-                  console.log("currentPerson")
-                  console.log(currentPerson);
+                  // console.log("currentPerson")
+                  // console.log(currentPerson);
                   //check if userID exists within DBScoreArray
                   personIfExists(DBScoreArray, currentPerson)
                     .then(person => {
-                      console.log("person if exists")
-                      console.log(person)
+                      // console.log("person if exists")
+                      // console.log(person)
                       if (person != undefined) { //if person is in DB increment their scores
                         let scoreIndex = DBScoreArray.indexOf(person)
-                        console.log("scoreIndex")
-                        console.log(scoreIndex)
-                        console.log("incrementing person: ")
-                        console.log(DBScoreArray[scoreIndex]);
-                        console.log("USING DATA FROM PERSON:" + currentPerson._name)
-                        console.log("numLikes: " + currentPerson._numLikes)
-                        console.log("numPosts: " + currentPerson.numPosts)
+                        // console.log("scoreIndex")
+                        // console.log(scoreIndex)
+                        // console.log("incrementing person: ")
+                        // console.log(DBScoreArray[scoreIndex]);
+                        // console.log("USING DATA FROM PERSON:" + currentPerson._name)
+                        // console.log("numLikes: " + currentPerson._numLikes)
+                        // console.log("numPosts: " + currentPerson.numPosts)
                         DBScoreArray[scoreIndex]._numLikes += currentPerson._numLikes;
                         DBScoreArray[scoreIndex]._numPosts += currentPerson._numPosts;
-                        console.log("after: ")
-                        console.log(DBScoreArray[scoreIndex]);
+                        console.log("Updated person: " + DBScoreArray[scoreIndex]._name)
+                        //console.log(DBScoreArray[scoreIndex]);
 
 
                       } else {  //else add new person
