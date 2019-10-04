@@ -40,10 +40,10 @@ const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit
  *  remove before deployment
  */
 // updateDBScores();
-// createDBOutput()
-// .then(outputString =>{
-//   console.log(outputString);
-// })
+createDBOutput()
+.then(outputString =>{
+  console.log(outputString);
+})
 
 //response functions
 function respond() {
@@ -196,8 +196,8 @@ function createDBOutput() {
         outputString = "Leaderboard: \n"; 
 
         for (z = 0; z < 5 && z < sortedScores.length; z++) { //only want 5, or all if less than five
-          var ratioString = ("LPR: " + (sortedScores[z]._numLikes/sortedScores[z]._numPosts).toFixed(2)).padStart(12);
-          outputString += (z + 1) + ". " + (sortedScores[z]._name.substring(0,20)).padEnd(21) + ratioString + "\n";
+          var ratioString = ("LPR: " + (sortedScores[z]._numLikes/sortedScores[z]._numPosts).toFixed(2)).padStart(12,'.');
+          outputString += (z + 1) + ". " + (sortedScores[z]._name.substring(0,20)).padEnd(21, '.') + ratioString + "\n";
         }
 
         resolve(outputString);
