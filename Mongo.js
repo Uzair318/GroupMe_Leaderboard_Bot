@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+/**
+ * Need to update so we can have an array of people in MongoDB to keep track of running scores
+ * https://stackoverflow.com/questions/33049707/push-items-into-mongo-array-via-mongoose
+ */
+
 const schema = new mongoose.Schema({
     "count": Number,
     "bestPost": { //owner of the post that has recieved the most likes
@@ -7,7 +12,13 @@ const schema = new mongoose.Schema({
         "numLikes": Number,
         "text": String,
         "img_url": String
-    }
+    },
+    "scores": [{
+        "_name": String,
+        "_userID": String,
+        "_numPosts": Number,
+        "_numLikes": Number
+    }]
 });
 const Configs = mongoose.model('Configs', schema);
 
@@ -17,15 +28,51 @@ class Mongo {
         mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     }
 
-    //Need an updateBestPost() function
-    //need criteria set for evaluating if a post is eligible 
+    //gets the array of running scores from MongoDB
+    getScores() {
+        return new Promise((resolve, reject) => {
+            Configs.findOne({ _id: "5d531bcc976118190c32c83b" }, (error, config) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    //console.log(config.scores);
+                    resolve(config.scores);
+                }
+            });
+        });
+    }
 
+    pushScores(scoresArray) {
+        return new Promise((resolve, reject) => {
+            Configs.findOne({ _id: "5d531bcc976118190c32c83b" }, (error, config) =>{
+                if(error) {
+                    reject(error);
+                } else {
+                    config.scores = scoresArray;
+                    config.save((err, updated) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            console.log("updated scoresArray")
+                            resolve(updated.scores);
+                        }
+                    });
+                }
+                
+            })
+        })
+    }
+
+
+    //gets the number of posts since last auto-post
     getCount() {
         return new Promise((resolve, reject) => {
             Configs.findOne({}, (error, config) => {
                 if (error) {
                     reject(error);
-                } else {
+                } 
+                else {
+                    console.log(config.count);
                     resolve(config.count);
                 }
             });

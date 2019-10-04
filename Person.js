@@ -3,19 +3,20 @@ const sprintf = require('sprintf');
 class Person {
     constructor(givenName, id) {
         this._name = givenName;
-        this._ID = id;
+        this._userID = id;
         this._numPosts = 0;
         this._numLikes = 0;
 
         //this._likePostRatio = this._numLikes / this.numPosts;
     }
 
+
     set name(givenName) {
         this._name = givenName;
     }
 
     set ID(id) {
-        this._ID = id;
+        this._userID = id;
     }
     /*
     set likePostRatio(likes, posts) {
@@ -26,7 +27,7 @@ class Person {
         return this._name;
     }
     get ID() {
-        return this._ID;
+        return this._userID;
     }
     get numPosts() {
         return this._numPosts;
@@ -38,6 +39,7 @@ class Person {
     get likePostRatio() {
         return this._likePostRatio;
     }*/
+
 
     plusPost(num) {
         this._numPosts += num;
