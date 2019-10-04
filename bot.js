@@ -429,101 +429,105 @@ function postMessage() {
 }
 
 
-
+// postResults
 //Posts Leaderboard
 //   also has highest post of all time appended to bottom
-function postResults(senderID) {
+// function postResults(senderID) {
 
-  var botResponse, options, body, botReq;
-  const Admins = ['18197056', '39735084', '30109965', '46367350', '46537569'];  //array filled with user_id's of members that are allowed to display scoreboard
-  //             [ Izu       ,  Uzair   ,  Dan      ,  Ahmad    ,  Mohamed Yusuf]
+//   var botResponse, options, body, botReq;
+//   const Admins = ['18197056', '39735084', '30109965', '46367350', '46537569'];  //array filled with user_id's of members that are allowed to display scoreboard
+//   //             [ Izu       ,  Uzair   ,  Dan      ,  Ahmad    ,  Mohamed Yusuf]
 
-  if (Admins.includes(senderID)) {
-    responseString = createOutput()
-    highestObj = mongo.highestToString()
+//   if (Admins.includes(senderID)) {
+//     responseString = createOutput()
+//     highestObj = mongo.highestToString()
 
-    Promise.all([responseString, highestObj]).then((resultArray) => {
-      console.log(resultArray[1])
-      botResponse = resultArray[0]; //Should be in string form
-      botResponse += "\n" + resultArray[1].result;
+//     Promise.all([responseString, highestObj]).then((resultArray) => {
+//       console.log(resultArray[1])
+//       botResponse = resultArray[0]; //Should be in string form
+//       botResponse += "\n" + resultArray[1].result;
 
-      options = {
-        hostname: 'api.groupme.com',
-        path: '/v3/bots/post',
-        method: 'POST'
-      };
+//       options = {
+//         hostname: 'api.groupme.com',
+//         path: '/v3/bots/post',
+//         method: 'POST'
+//       };
 
-      body = {
-        "bot_id": botID,
-        "text": botResponse,
-        "attachments": [
-          {
-            "type": "image",
-            "url": resultArray[1].imgURL
-          }
-        ]
-      };
-
-
-      console.log('sending ' + botResponse + ' to ' + botID);
-
-      botReq = HTTPS.request(options, function (res) {
-        if (res.statusCode == 202) {
-          //neat
-        } else {
-          console.log('rejecting bad status code ' + res.statusCode);
-        }
-      });
-
-      botReq.on('error', function (err) {
-        console.log('error posting message ' + JSON.stringify(err));
-      });
-      botReq.on('timeout', function (err) {
-        console.log('timeout posting message ' + JSON.stringify(err));
-      });
-      botReq.end(JSON.stringify(body));
-    }
-    )
-
-  }
-  else { //not allowed
-    botResponse = "Sorry, you do not have permission to do this.";//; + "\n senderID: " + senderID; //Should be in string form
-
-    options = {
-      hostname: 'api.groupme.com',
-      path: '/v3/bots/post',
-      method: 'POST'
-    };
-
-    body = {
-      "bot_id": botID,
-      "text": botResponse
-    };
+//       body = {
+//         "bot_id": botID,
+//         "text": botResponse,
+//         "attachments": [
+//           {
+//             "type": "image",
+//             "url": resultArray[1].imgURL
+//           }
+//         ]
+//       };
 
 
-    console.log('sending ' + botResponse + ' to ' + botID);
+//       console.log('sending ' + botResponse + ' to ' + botID);
 
-    botReq = HTTPS.request(options, function (res) {
-      if (res.statusCode == 202) {
-        //neat
-      } else {
-        console.log('rejecting bad status code ' + res.statusCode);
-      }
-    });
+//       botReq = HTTPS.request(options, function (res) {
+//         if (res.statusCode == 202) {
+//           //neat
+//         } else {
+//           console.log('rejecting bad status code ' + res.statusCode);
+//         }
+//       });
 
-    botReq.on('error', function (err) {
-      console.log('error posting message ' + JSON.stringify(err));
-    });
-    botReq.on('timeout', function (err) {
-      console.log('timeout posting message ' + JSON.stringify(err));
-    });
-    botReq.end(JSON.stringify(body));
-  }
-}
+//       botReq.on('error', function (err) {
+//         console.log('error posting message ' + JSON.stringify(err));
+//       });
+//       botReq.on('timeout', function (err) {
+//         console.log('timeout posting message ' + JSON.stringify(err));
+//       });
+//       botReq.end(JSON.stringify(body));
+//     }
+//     )
+
+//   }
+//   else { //not allowed
+//     botResponse = "Sorry, you do not have permission to do this.";//; + "\n senderID: " + senderID; //Should be in string form
+
+//     options = {
+//       hostname: 'api.groupme.com',
+//       path: '/v3/bots/post',
+//       method: 'POST'
+//     };
+
+//     body = {
+//       "bot_id": botID,
+//       "text": botResponse
+//     };
 
 
-//Posts Leaderboard
-//   also has highest post of all time appended to bottom
+//     console.log('sending ' + botResponse + ' to ' + botID);
+
+//     botReq = HTTPS.request(options, function (res) {
+//       if (res.statusCode == 202) {
+//         //neat
+//       } else {
+//         console.log('rejecting bad status code ' + res.statusCode);
+//       }
+//     });
+
+//     botReq.on('error', function (err) {
+//       console.log('error posting message ' + JSON.stringify(err));
+//     });
+//     botReq.on('timeout', function (err) {
+//       console.log('timeout posting message ' + JSON.stringify(err));
+//     });
+//     botReq.end(JSON.stringify(body));
+//   }
+// }
+
+
+
+
+/**
+ * Posts Leaderboard
+ * also has highest post of all time appended to bottom
+ */
 function postDBResults(senderID, DBScoresArray) {
 
   var botResponse, options, body, botReq;

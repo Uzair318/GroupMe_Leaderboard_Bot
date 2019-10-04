@@ -127,7 +127,7 @@ class Mongo {
                         console.log("no object found");
                         return -1;
                     }
-                    if (foundObject.count == 50) {
+                    if (foundObject.count == 49) {
                         foundObject.count = 0;
                         foundObject.save((err, updatedObject) => {
                             if (err) {
