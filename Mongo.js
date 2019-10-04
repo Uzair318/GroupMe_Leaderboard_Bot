@@ -127,13 +127,13 @@ class Mongo {
                         console.log("no object found");
                         return -1;
                     }
-                    if (foundObject.count == 79) {
+                    if (foundObject.count == 50) {
                         foundObject.count = 0;
                         foundObject.save((err, updatedObject) => {
                             if (err) {
                                 reject(err);
                             } else {
-                                resolve(80);
+                                resolve(50);
                             }
                         });
                     } else {
@@ -213,7 +213,7 @@ class Mongo {
                 if (error) {
                     reject(error);
                 } else {
-                    result += "   by " + config.bestPost.owner + " with " + config.bestPost.numLikes + " likes \n"
+                    result += "  by " + config.bestPost.owner + " with " + config.bestPost.numLikes + " likes \n"
                     if (config.bestPost.text) {
                         result += "      " + "\"" + config.bestPost.text + "\"";
                     }
