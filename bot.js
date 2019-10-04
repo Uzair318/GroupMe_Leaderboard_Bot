@@ -39,11 +39,14 @@ const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit
  * Code for testing
  *  remove before deployment
  */
-// updateDBScores();
-createDBOutput()
-.then(outputString =>{
-  console.log(outputString);
-})
+// updateDBScores()
+//   .then(DBScoresArray => {
+//     createDBOutput(DBScoresArray)
+//       .then(outputString => {
+//         console.log(outputString);
+//       })
+//   })
+
 
 //response functions
 function respond() {
@@ -72,8 +75,8 @@ function respond() {
         //postResults(senderID);
         //update the scores -> display
         updateDBScores()
-         .then({
-           postDBResults(senderID)
+          .then(DBScoresArray => {
+            postDBResults(senderID, DBScoresArray)
           })
         this.res.end();
       } else if ((request.text && (request.text == "/postHighest"))) {
@@ -167,44 +170,45 @@ function createOutput() {
 
 /**
  * Creates output String for leaderboard
- * Uses DBScoresArray from MongoDBB
+ * Uses DBScoresArray that was just pushed to MongoDB after update
  */
-function createDBOutput() {
+function createDBOutput(DBScoresArray) {
   return new Promise((resolve, reject) => {
-    mongo.getScores()
-      .then(DBScoresArray => {
+    // mongo.getScores()
+    //   .then(DBScoresArray => {
 
-        /*compares Person Objects
-             -1 if p1 has a higher Like-Post-ratio
-              0 if IDs are the same or if Like-Post-ratio is same
-              1 if p1 has a lower Like-Post-ratio
-    
-              IN ORDER BY RANK (1 > 2 > 3, etc.)
-        */
-        sortedScores = DBScoresArray.sort(function (p1, p2) {//arr.sort([compareFunction])
-          let LP1 = (p1._numLikes / p1._numPosts)
-          let LP2 = (p2._numLikes / p2._numPosts)
-          if (LP1 > LP2) {
-            return -1;
-          } else if (LP1 == LP2) {
-            return 0;
-          } else {
-            return 1;
-          }
-        });
+    /*compares Person Objects
+         -1 if p1 has a higher Like-Post-ratio
+          0 if IDs are the same or if Like-Post-ratio is same
+          1 if p1 has a lower Like-Post-ratio
+ 
+          IN ORDER BY RANK (1 > 2 > 3, etc.)
+    */
+    console.log(DBScoresArray)
+    sortedScores = DBScoresArray.sort(function (p1, p2) {//arr.sort([compareFunction])
+      let LP1 = (p1._numLikes / p1._numPosts)
+      let LP2 = (p2._numLikes / p2._numPosts)
+      if (LP1 > LP2) {
+        return -1;
+      } else if (LP1 == LP2) {
+        return 0;
+      } else {
+        return 1;
+      }
+    });
 
-        //first 5 Persons in sortedScores are highest ranked
+    //first 5 Persons in sortedScores are highest ranked
 
-        outputString = "Leaderboard: \n"; 
+    outputString = "Leaderboard: \n";
 
-        for (z = 0; z < 5 && z < sortedScores.length; z++) { //only want 5, or all if less than five
-          var ratioString = ("LPR: " + (sortedScores[z]._numLikes/sortedScores[z]._numPosts).toFixed(2)).padStart(12,'.');
-          outputString += (z + 1) + ". " + (sortedScores[z]._name.substring(0,20)).padEnd(21, '.') + ratioString + "\n";
-        }
+    for (z = 0; z < 5 && z < sortedScores.length; z++) { //only want 5, or all if less than five
+      var ratioString = ("LPR: " + (sortedScores[z]._numLikes / sortedScores[z]._numPosts).toFixed(2)).padStart(12, '.');
+      outputString += (z + 1) + ". " + (sortedScores[z]._name.substring(0, 20)).padEnd(21, '.') + ratioString + "\n";
+    }
 
-        resolve(outputString);
-      })
+    resolve(outputString);
   })
+  //})
 }
 
 
@@ -521,14 +525,14 @@ function postResults(senderID) {
 
 //Posts Leaderboard
 //   also has highest post of all time appended to bottom
-function postDBResults(senderID) {
+function postDBResults(senderID, DBScoresArray) {
 
   var botResponse, options, body, botReq;
   const Admins = ['18197056', '39735084', '30109965', '46367350', '46537569'];  //array filled with user_id's of members that are allowed to display scoreboard
-               //[ Izu       ,  Uzair   ,  Dan      ,  Ahmad    ,  Mohamed Yusuf]
+  //[ Izu       ,  Uzair   ,  Dan      ,  Ahmad    ,  Mohamed Yusuf]
 
   if (Admins.includes(senderID)) {
-    responseString = createDBOutput()
+    responseString = createDBOutput(DBScoresArray)
     highestObj = mongo.highestToString()
 
     Promise.all([responseString, highestObj]).then((resultArray) => {
