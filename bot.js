@@ -71,8 +71,8 @@ function respond() {
         this.res.writeHead(200);
         //postResults(senderID);
         //update the scores -> display
-        updateDBScores();
-        postDBResults(senderID);
+        updateDBScores()
+         .then(postDBResults(senderID))
         this.res.end();
       } else if ((request.text && (request.text == "/postHighest"))) {
         this.res.writeHead(200);
