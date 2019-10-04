@@ -54,7 +54,7 @@ function respond() {
 
   mongo.incrementCount()
     .then((countPlus) => {
-      countPlus = 49; //FOR TESTING PURPOSES, REMOVE BEFORE DEPLOYING
+      //countPlus = 49; //FOR TESTING PURPOSES, REMOVE BEFORE DEPLOYING
       console.log("Number of messages since last post: " + countPlus);
       if (countPlus == 50 || (request.text && (request.text == "/postResults"))) {
 
