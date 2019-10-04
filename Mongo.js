@@ -213,7 +213,7 @@ class Mongo {
                 if (error) {
                     reject(error);
                 } else {
-                    result += "\t by " + config.bestPost.owner + " with " + config.bestPost.numLikes + " likes \n"
+                    result += "by " + config.bestPost.owner + " with " + config.bestPost.numLikes + " likes \n"
                     if (config.bestPost.text) {
                         result += "\t + \"" + config.bestPost.text + "\"";
                     }
