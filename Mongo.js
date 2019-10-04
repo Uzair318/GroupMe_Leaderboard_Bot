@@ -221,6 +221,7 @@ class Mongo {
                         highestString: result,
                         imgURL: config.bestPost.img_url
                     }
+                    console.log(resultObj)
                     resolve(resultObj); //dont forget to post an attachment, type image, with imgURL
                 }
 

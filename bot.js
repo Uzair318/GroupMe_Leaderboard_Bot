@@ -46,7 +46,7 @@ const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit
 //         console.log(outputString);
 //       })
 //   })
-
+// mongo.highestToString()
 
 //response functions
 function respond() {
@@ -57,7 +57,6 @@ function respond() {
 
   mongo.incrementCount()
     .then((countPlus) => {
-      //countPlus = 49; //FOR TESTING PURPOSES, REMOVE BEFORE DEPLOYING
       console.log("Number of messages since last post: " + countPlus);
       if (countPlus == 50 || (request.text && (request.text == "/postResults"))) {
 
@@ -536,9 +535,9 @@ function postDBResults(senderID, DBScoresArray) {
     highestObj = mongo.highestToString()
 
     Promise.all([responseString, highestObj]).then((resultArray) => {
-      console.log(resultArray[1])
+      //console.log(resultArray[1])
       botResponse = resultArray[0]; //Should be in string form
-      botResponse += "\n" + resultArray[1].result;
+      botResponse += "\n" + resultArray[1].highestString;
 
       options = {
         hostname: 'api.groupme.com',
