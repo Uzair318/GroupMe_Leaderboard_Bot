@@ -72,7 +72,9 @@ function respond() {
         //postResults(senderID);
         //update the scores -> display
         updateDBScores()
-         .then(postDBResults(senderID))
+         .then({
+           postDBResults(senderID)
+          })
         this.res.end();
       } else if ((request.text && (request.text == "/postHighest"))) {
         this.res.writeHead(200);
@@ -300,7 +302,6 @@ function getMemberStats(posts, members) {
  * calls the modified getMessageStats
  * gets the mongoDB array
  * updates based on new scores array form getMessageStats
- * SHOULD ONLY BE RUN EVERY 50 MESSAGES
  */
 function updateDBScores() {
   return new Promise((resolve, reject) => {
