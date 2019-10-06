@@ -1,1 +1,1 @@
-This is Uzair and Dans project
+#GroupMe Leaderboard Chat Bot
