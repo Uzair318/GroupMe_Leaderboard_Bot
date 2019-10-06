@@ -84,5 +84,6 @@ app.get('/scores', (req, res) => {
 
 
 // start listening to the server...
-app.listen(process.env.PORT || 3000)
-console.log('listening on port 3000')
+expressPort = Number(process.env.PORT || 3000)
+app.listen(expressPort)
+console.log('listening on port ' + expressPort)
