@@ -204,12 +204,12 @@ class Mongo {
 
     highestToString() {
         return new Promise((resolve, reject) => {
-            var result = "Highest Post of All Time: \n";
+            var result = "HIGHEST POST OF ALL TIME: \n";
             Configs.findOne({}, (error, config) => {
                 if (error) {
                     reject(error);
                 } else {
-                    result += "  by " + config.bestPost.owner + " with " + config.bestPost.numLikes + " likes \n"
+                    result += "by " + config.bestPost.owner + " with " + config.bestPost.numLikes + " likes \n"
                     if (config.bestPost.text) {
                         result += "      " + "\"" + config.bestPost.text + "\"";
                     }

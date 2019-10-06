@@ -198,7 +198,7 @@ function createDBOutput(DBScoresArray) {
 
     //first 5 Persons in sortedScores are highest ranked
 
-    outputString = "Leaderboard: \n";
+    outputString = "LEADERBOARD: \n";
 
     for (z = 0; z < 5 && z < sortedScores.length; z++) { //only want 5, or all if less than five
       var ratioString = ("LPR: " + (sortedScores[z]._numLikes / sortedScores[z]._numPosts).toFixed(2)).padStart(12, '.');
