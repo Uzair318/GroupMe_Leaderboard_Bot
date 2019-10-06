@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
 
-/**
- * Need to update so we can have an array of people in MongoDB to keep track of running scores
- * https://stackoverflow.com/questions/33049707/push-items-into-mongo-array-via-mongoose
- */
 
 const schema = new mongoose.Schema({
     "count": Number,
