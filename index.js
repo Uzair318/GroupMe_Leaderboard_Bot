@@ -44,7 +44,6 @@ function ping() {
  * @author Uzair Ahmed
  * 
  * Provides endpoint for frontend to get data from MongoDB
- */
 
 
 var express = require('express');
@@ -58,7 +57,7 @@ var mongo = new Mongo();
  * Requirements of express server
  * 1. Respond to frontend request for updated scores array
  * 2. Set update flag in mongoDB (how to communicate to frontend to update?)
- */
+ *
 
 
 // connect to MongoDB using mongoose
@@ -87,3 +86,5 @@ app.get('/scores', (req, res) => {
 expressPort = Number(process.env.PORT || 3000)
 app.listen(expressPort)
 console.log('listening on port ' + expressPort)
+
+*/
