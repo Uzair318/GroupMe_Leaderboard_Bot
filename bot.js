@@ -16,21 +16,19 @@ const dotenv = require('dotenv').config();
  *    (be sure to double check callback URL of each bot on GroupMe site)
  */
 
-// f857f36c11d25f33c6c2980505 = Meme Chat (PRODUCTION)
-// 4bb46a8ba8d21f56cd430d05a4 = Meme Court *
+
 
 
 var mongo = new Mongo();
 
 var botID = process.env.BOT_ID;
 
-//"f857f36c11d25f33c6c2980505" = Meme Chat
 
 
 // https://dev.groupme.com/docs/v3 ~ API documentation
 const baseUrl = 'https://api.groupme.com/v3/groups/';
-const token = 'token=1df9001037c901372aca3263649c7787';
-const groupId = '50769460';// '26930811' = Meme Chat, '50769460' = Meme Court
+const token = process.env.DEV_TOKEN;
+const groupId = process.env.GROUP_ID;
 const msgLimit = '100';
 // GET /groups/:group_id/messages
 const url = baseUrl + groupId + '/messages' + '?' + token + '&limit=' + msgLimit;
