@@ -95,11 +95,11 @@ class Mongo {
                     oldHighestPost.bestPost.numLikes = newHighestPost.favorited_by.length;
                     oldHighestPost.bestPost.text = newHighestPost.text;
                     oldHighestPost.bestPost.img_url = newHighestPost.attachments[0].url;
-                    oldHighestPost.save((err, updatedHighestPost) => {
+                    oldHighestPost.save((err, oldHighestPost) => {
                         if (err) {
                             reject(err);
                         } else {
-                            resolve(updatedHighestPost);
+                            resolve(oldHighestPost);
                         }
                     });
 
